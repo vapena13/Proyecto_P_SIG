@@ -76,7 +76,7 @@ ENV/
 # Si quieres conservar outputs finales, deja esta línea comentada
 # =========================
 # outputs/
-
+no/
 # =========================
 # Archivos auxiliares renderizados por Quarto
 # Mantén comentado si sí quieres incluirlos
