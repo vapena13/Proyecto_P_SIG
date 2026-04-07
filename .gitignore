@@ -1,0 +1,84 @@
+```gitignore
+# =========================
+# Sistema operativo
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.python-version
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Jupyter / IPython
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Quarto / RStudio / VS Code
+# =========================
+.quarto/
+.Rproj.user/
+.history
+*.code-workspace
+
+# =========================
+# Logs y temporales
+# =========================
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+*~
+
+# =========================
+# Salidas compiladas opcionales
+# Descomenta si NO quieres versionarlas
+# =========================
+# proyecto_final.html
+# proyecto_final.pdf
+
+# =========================
+# Archivos auxiliares de LaTeX/PDF
+# =========================
+*.aux
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# =========================
+# Archivos pesados de datos
+# Ajusta si luego guardas ráster o zip grandes
+# =========================
+# *.tif
+# *.tiff
+# *.zip
+# *.gpkg
+
+# =========================
+# Carpeta de outputs temporales
+# Si quieres conservar outputs finales, deja esta línea comentada
+# =========================
+# outputs/
+
+# =========================
+# Archivos auxiliares renderizados por Quarto
+# Mantén comentado si sí quieres incluirlos
+# =========================
+# proyecto_final_files/

@@ -1,0 +1,182 @@
+---
+title: "Detección de áreas inundadas mediante imágenes Sentinel-1 y clasificación Random Forest en la Subzona Hidrográfica del Bajo Sinú, Colombia"
+author: "Viviana Andrea Peña González"
+date: today
+lang: es
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: cosmo
+  pdf:
+    toc: true
+    number-sections: true
+    pdf-engine: pdflatex
+execute:
+  echo: false
+bibliography: referencias.bib
+csl: apa.csl
+---
+
+::: {.text-center}
+Universidad Nacional de Colombia  
+
+Maestría en Geomática  
+
+Asignatura: Programación SIG  
+
+Docente: Alexys Herleym Rodríguez Avellaneda  
+
+Proyecto final – Anteproyecto
+:::
+
+# Introducción y justificación
+
+Las inundaciones constituyen uno de los fenómenos hidrológicos con alto impacto territorial, social y ambiental en Colombia, especialmente en zonas con alta dinámica fluvial, ocupación de planicies de inundación y exposición de actividades humanas e infraestructura. En el departamento de Córdoba, el comportamiento del río Sinú ha generado afectaciones sobre áreas rurales y urbanas, por lo que el análisis espacial de este fenómeno resulta pertinente tanto desde una perspectiva territorial como metodológica.
+
+En el marco de esta problemática, la **Subzona Hidrográfica del Bajo Sinú** representa una unidad espacial adecuada para estudiar la distribución de áreas inundadas, ya que concentra procesos hidrológicos relevantes de la parte baja de la cuenca y ofrece una delimitación más precisa que analizar la cuenca completa. 
+
+El uso de imágenes **Sentinel-1** es pertinente porque este sensor radar puede captar información de la superficie terrestre incluso en condiciones de nubosidad, una ventaja importante en eventos hidrometeorológicos. La literatura muestra que Sentinel-1 ha sido utilizado con éxito en cartografía rápida de inundaciones y en flujos automáticos de análisis con niveles de precisión aceptables [@li2018; @alexandre2020].
+
+Por otra parte, el algoritmo **Random Forest** constituye una alternativa metodológica adecuada para este trabajo, debido a su capacidad para manejar múltiples variables de entrada y su utilidad en problemas de clasificación de inundaciones con imágenes de percepción remota. Su complejidad es intermedia y compatible con el tiempo disponible, sin sacrificar rigurosidad analítica [@billah2023].
+
+Con el fin de mantener un alcance viable, el proyecto se enfocará en **un único evento reciente de inundación** dentro de la Subzona Hidrográfica del Bajo Sinú, utilizando un número limitado de fechas e implementando un flujo reproducible en **Google Earth Engine y Python**. Este enfoque permite desarrollar un producto técnicamente sólido, coherente con el curso y factible dentro de un periodo de cuatro semanas. Además, el uso de Google Earth Engine fortalece el componente de reproducibilidad y facilita el procesamiento de imágenes satelitales en la nube [@gorelick2017].
+
+# Estado del arte / revisión bibliográfica preliminar
+
+La cartografía de inundaciones mediante teledetección ha sido ampliamente desarrollada en las últimas décadas debido a la necesidad de identificar de manera rápida y confiable la extensión espacial de eventos extremos. En este campo, los sensores radar de apertura sintética (SAR) han adquirido una relevancia especial porque pueden operar independientemente de la cobertura nubosa y de la iluminación solar, condiciones que suelen limitar el uso de imágenes ópticas durante episodios de inundación.
+
+En particular, la misión **Sentinel-1** ha demostrado ser una fuente útil para estudios de inundación gracias a su resolución espacial, disponibilidad abierta y frecuencia de adquisición. Li et al. propusieron un enfoque automático de detección de cambio en datos Sentinel-1 para cartografía rápida de inundaciones, con resultados cercanos al 95% de exactitud global y un coeficiente kappa de 0.75, destacando la simplicidad, velocidad y reproducibilidad del método [@li2018]. Asimismo, Alexandre et al. mostraron que las cadenas de procesamiento automatizadas con Sentinel-1 y Python son confiables y relativamente simples de implementar en problemas de análisis de inundaciones [@alexandre2020].
+
+Además de los métodos automáticos basados en umbrales o detección de cambio, la literatura también ha explorado la integración de algoritmos de aprendizaje automático. Entre ellos, **Random Forest** se ha utilizado con resultados positivos para clasificación de coberturas y evaluación de daños por inundación a partir de imágenes Sentinel, mostrando ventajas en precisión y aplicabilidad operativa [@billah2023].
+
+En paralelo, las plataformas de computación en la nube han ampliado la escala y reproducibilidad de los análisis espaciales. **Google Earth Engine** se ha consolidado como una herramienta central para el procesamiento de grandes volúmenes de imágenes satelitales, ya que ofrece un catálogo amplio de datos, funciones integradas y acceso mediante JavaScript y Python. Gorelick et al. destacan que esta plataforma fue diseñada para facilitar análisis geoespaciales a escala planetaria y promover flujos de trabajo reproducibles sin depender del hardware local del usuario [@gorelick2017].
+
+De manera complementaria, revisiones recientes sobre integración de percepción remota y aprendizaje automático en estudios de inundación muestran que modelos como Random Forest, SVM y redes neuronales han sido ampliamente utilizados y presentan desempeños adecuados en contextos diversos, lo cual refuerza la vigencia del enfoque propuesto [@manyaka2026].
+
+En conjunto, la revisión preliminar indica que existe respaldo metodológico suficiente para plantear un proyecto basado en cuatro ideas centrales: uso de Sentinel-1 para la detección de inundaciones, clasificación supervisada con Random Forest, automatización parcial del flujo de trabajo y documentación reproducible en entornos programáticos. La revisión será ampliada en la versión final del proyecto con artículos específicos sobre cartografía de inundaciones con imágenes SAR, clasificación supervisada y automatización geoespacial reproducible.
+
+# Objetivos
+
+## Objetivo general
+
+Analizar la distribución espacial de áreas inundadas asociadas a un evento reciente en la Subzona Hidrográfica del Bajo Sinú mediante imágenes Sentinel-1 y un modelo Random Forest, a partir de un flujo reproducible implementado en Google Earth Engine y Python.
+
+## Objetivos específicos
+
+1. Identificar y procesar imágenes Sentinel-1 y capas auxiliares pertinentes para la detección de áreas inundadas en la Subzona Hidrográfica del Bajo Sinú durante un evento reciente.
+
+2. Implementar y evaluar un modelo Random Forest para clasificar áreas inundadas y no inundadas, generando cartografía temática y métricas básicas del evento analizado.
+
+# Área de estudio
+
+El área de estudio corresponde a la **Subzona Hidrográfica del Bajo Sinú**, ubicada en el departamento de Córdoba, Colombia. Esta delimitación proporciona una unidad territorial más manejable que la cuenca completa del río Sinú, lo cual apoya tanto la interpretación espacial como la viabilidad operativa del proyecto.
+
+La elección de esta subzona responde a dos criterios principales. El primero es su pertinencia territorial, dado que el tramo bajo del río Sinú presenta condiciones propicias para la ocurrencia de inundaciones por su dinámica fluvial y por la presencia de áreas bajas y planicies susceptibles al anegamiento. El segundo es la factibilidad analítica, ya que trabajar sobre una subzona específica permite controlar de manera efectiva el volumen de datos, seleccionar un evento concreto, reducir el tiempo de procesamiento y simplificar la construcción de muestras de entrenamiento y validación.
+
+La delimitación final del polígono se realizó a partir de información geográfica en formato vectorial, posteriormente convertida a GeoJSON para su integración al flujo reproducible del proyecto. En la versión final del documento se incluye un mapa de la Subzona Hidrográfica del Bajo Sinú como referencia espacial del área de análisis.
+
+
+```{python}
+import geopandas as gpd
+import matplotlib.pyplot as plt
+
+# Leer capas
+dptos = gpd.read_file("data/vector/processed/depto.geojson")
+aoi = gpd.read_file("data/vector/processed/bajo_sinu.geojson")
+
+# Unificar CRS si hace falta
+if dptos.crs is not None and dptos.crs.to_string() != "EPSG:4326":
+    dptos = dptos.to_crs(epsg=4326)
+
+if aoi.crs is not None and aoi.crs.to_string() != "EPSG:4326":
+    aoi = aoi.to_crs(epsg=4326)
+
+# Filtrar Córdoba
+cordoba = dptos[dptos["DeNombre"].str.upper().str.contains("CORDOBA|CÓRDOBA", na=False)]
+
+# Crear mapa
+fig, ax = plt.subplots(figsize=(8, 10))
+
+dptos.plot(ax=ax, color="whitesmoke", edgecolor="gray", linewidth=0.4)
+cordoba.plot(ax=ax, color="lightyellow", edgecolor="black", linewidth=1.0)
+aoi.plot(ax=ax, color="deepskyblue", edgecolor="black", linewidth=1.0)
+
+ax.set_title("Área de estudio: Subzona Hidrográfica del Bajo Sinú, Departamento de Córdoba", fontsize=13)
+ax.set_xlabel("Longitud")
+ax.set_ylabel("Latitud")
+ax.grid(True, linestyle="--", alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+# Fuentes de datos
+
+El proyecto se apoyará en fuentes de datos abiertas y reproducibles, seleccionadas de acuerdo con su utilidad directa para la detección de áreas inundadas.
+
+## Imágenes principales
+
+La fuente principal será la colección **Sentinel-1 SAR GRD** disponible en **Google Earth Engine**, la cual se utilizará para identificar cambios en la retrodispersión asociados a áreas inundadas durante el evento seleccionado. Se priorizarán imágenes con polarización VV y/o VH, de acuerdo con la disponibilidad temporal y la pertinencia para el análisis.
+
+## Delimitación hidrográfica y capas vectoriales base
+
+Se empleará la delimitación vectorial de la **Subzona Hidrográfica del Bajo Sinú** como máscara espacial principal del proyecto. Asimismo, se utilizarán capas básicas de contexto territorial, como departamentos o límites administrativos, con el fin de ubicar el área de estudio y apoyar la presentación cartográfica de los resultados.
+
+## Capas auxiliares
+
+De forma complementaria, podrán considerarse máscaras de cuerpos de agua permanentes u otras capas auxiliares únicamente si su uso contribuye de manera clara a mejorar la interpretación o la clasificación de las áreas inundadas. La incorporación de estas capas no constituye un componente central del proyecto, sino un apoyo opcional sujeto a su utilidad real en el análisis.
+
+## Documentación y trazabilidad
+
+Todas las fuentes utilizadas serán documentadas indicando su origen, formato, periodo temporal y función dentro del flujo metodológico, con el fin de garantizar la trazabilidad y reproducibilidad del proyecto.
+
+
+# Metodología propuesta
+
+La metodología se organizará en cinco fases, orientadas a construir un flujo de trabajo reproducible y factible dentro del tiempo disponible.
+
+## Fase 1. Delimitación y preparación del área de estudio
+
+Se obtendrá la capa vectorial de la Subzona Hidrográfica del Bajo Sinú y se prepararán capas base para la representación cartográfica.
+
+## Fase 2. Consulta y selección de imágenes Sentinel-1
+
+En Google Earth Engine se consultará la colección Sentinel-1 filtrada por la subzona, rango temporal y polarización, para identificar dos o tres fechas clave de un evento reciente de inundación.
+
+## Fase 3. Construcción de variables y muestras de entrenamiento
+
+A partir de las imágenes SAR se generarán variables de entrada para la clasificación. Se construirán muestras de entrenamiento para las clases **inundado** y **no inundado**, incorporando capas auxiliares si contribuyen directamente a la diferenciación.
+
+## Fase 4. Clasificación con Random Forest y evaluación básica
+
+Se implementará un modelo Random Forest para producir un mapa temático binario de áreas inundadas y no inundadas. La parametrización del modelo será sencilla, evitando procesos de optimización que amplíen innecesariamente el alcance. El resultado será evaluado mediante métricas básicas como matriz de confusión, precisión global y, si es posible, coeficiente kappa o una medida equivalente.
+
+## Fase 5. Generación de productos cartográficos y documentación reproducible
+
+El producto final propuesto es un mapa temático del evento, una cuantificación básica del área inundada y una breve interpretación del patrón espacial observado en la Subzona Hidrográfica del Bajo Sinú. 
+
+
+# Lenguaje de programación y librerías propuestas
+
+El lenguaje principal será **Python**, por su versatilidad para integrar procesamiento geoespacial, análisis de datos y aprendizaje automático. El procesamiento de imágenes se apoyará en **Google Earth Engine**, debido a su capacidad para filtrar, visualizar y procesar imágenes satelitales de manera eficiente en la nube [@gorelick2017].
+
+Las librerías propuestas son:
+
+- `earthengine-api`, para conexión y consulta de datos en Google Earth Engine
+- `geemap`, para visualización y apoyo en la integración con GEE
+- `geopandas`, para manejo de datos vectoriales
+- `pandas` y `numpy`, para manipulación de datos
+- `matplotlib`, para gráficos básicos y apoyo visual
+- `rasterio`, en caso de requerir manejo local de ráster exportados
+- `scikit-learn`, para implementar el modelo Random Forest
+- `quarto`, para la documentación y renderización del proyecto en `.qmd`
+
+Para mantener la viabilidad del cronograma, se priorizará un flujo central basado en **GEE + Python + scikit-learn**, evitando incorporar pasos técnicos que no aporten directamente al cumplimiento de los objetivos.
+
+# Reproducibilidad
+
+El proyecto se desarrollará bajo principios de ciencia abierta y reproducibilidad. Para ello, se estructurará un repositorio en GitHub que incluirá el archivo fuente en formato `.qmd`, sus salidas renderizadas en HTML y PDF, los scripts utilizados en cada fase del análisis y un archivo de dependencias del entorno, como `requirements.txt`. Esta organización permitirá que el flujo de trabajo pueda replicarse desde la delimitación del área de estudio hasta la generación de mapas y métricas espaciales.
+
+
+# Referencias
