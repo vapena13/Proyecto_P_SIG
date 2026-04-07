@@ -10,25 +10,37 @@ format:
     theme: cosmo
   pdf:
     toc: true
-    number-sections: true
-    pdf-engine: pdflatex
+    number-sections: false
+    title-block: false
 execute:
   echo: false
 bibliography: referencias.bib
 csl: apa.csl
 ---
 
-::: {.text-center}
-Universidad Nacional de Colombia  
+<!--
+::: {.titlepage}
+<br><br>
+<div style="text-align: center;">
 
+<span style="font-size:1.5em;"><b>Universidad Nacional de Colombia</b></span>  
+<br>
 Maestría en Geomática  
-
+<br>
 Asignatura: Programación SIG  
-
+<br>
 Docente: Alexys Herleym Rodríguez Avellaneda  
+<br><br><br>
 
-Proyecto final – Anteproyecto
+<span style="font-size:1.3em;"><b>Detección de áreas inundadas mediante imágenes Sentinel-1 y clasificación Random Forest en la Subzona Hidrográfica del Bajo Sinú, Colombia</b></span>  
+<br><br><br>
+
+Viviana Andrea Peña González  
+<br>
+`r format(Sys.Date(), "%d de %B de %Y")`  
+</div>
 :::
+-->
 
 # Introducción y justificación
 
