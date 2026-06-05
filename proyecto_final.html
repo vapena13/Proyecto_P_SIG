@@ -561,25 +561,12 @@ A_{ha} = \frac{N_{pix} \cdot r^2}{10\,000}
 <p>Las salidas finales del proyecto se generaron mediante scripts en Google Earth Engine y Python. Los productos principales corresponden a: i) un ráster de inundación temporal clasificada, ii) un ráster de severidad relativa morfométrica, iii) una tabla de métricas del modelo Random Forest, iv) una tabla de área inundada total y v) tablas de distribución del área inundada por rangos de elevación y pendiente.</p>
 <p>Dado el enfoque de Programación SIG, se priorizó que las salidas fueran generadas por código, evitando depender de procesos manuales para producir resultados intermedios y finales. Esta decisión permite repetir el flujo con ajustes mínimos sobre nuevas ventanas temporales o sobre otra delimitación espacial, siempre que se mantengan disponibles las fuentes de datos utilizadas.</p>
 <p>El flujo metodológico general puede resumirse así:</p>
-<pre class="text"><code>AOI Bajo Sinú + evento seleccionado
-        ↓
-Sentinel-1 preevento/evento + NASADEM + pendiente + OPERA DSWx-S1 + JRC GSW
-        ↓
-Construcción de predictores SAR y topográficos
-        ↓
-Muestreo estratificado agua/no agua y separación entrenamiento/validación
-        ↓
-Entrenamiento Random Forest en Google Earth Engine
-        ↓
-Clasificación inicial de agua del evento
-        ↓
-Exclusión de agua permanente y evaluación de conectividad
-        ↓
-Inundación temporal clasificada
-        ↓
-Área inundada, distribución topográfica y severidad relativa
-        ↓
-Mapas, tablas, métricas, apps GEE e informe reproducible en Quarto</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/flujo_metodologico.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Flujo metodológico del proyecto.</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="resultados" class="level1" data-number="8">
@@ -618,6 +605,43 @@ OA = \frac{225 + 221}{519} = 0.859
 </section>
 <section id="resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia"><span class="header-section-number">8.2</span> Resultados de la verificación local en Python y el resumen en Julia</h2>
+<p>La comparación entre Google Earth Engine, Python y Julia se planteó como una verificación de reproducibilidad e interoperabilidad. Cada herramienta cumplió un papel diferente dentro del flujo, por lo que no se interpretan como tres modelos espaciales independientes, sino como componentes complementarios de una misma cadena de análisis.</p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Herramienta</th>
+<th>Rol en el proyecto</th>
+<th>Producto principal</th>
+<th>Alcance de la comparación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Google Earth Engine</td>
+<td>Procesamiento ráster completo y clasificación espacial</td>
+<td>Máscara de inundación, severidad, áreas y métricas RF</td>
+<td>Resultado principal del análisis</td>
+</tr>
+<tr class="even">
+<td>Python</td>
+<td>Reentrenamiento local con muestras exportadas y postproceso</td>
+<td>Métricas RF, importancia de variables, figuras y tablas limpias</td>
+<td>Verifica comportamiento del modelo sobre las muestras</td>
+</tr>
+<tr class="odd">
+<td>Julia</td>
+<td>Lectura y resumen de salidas tabulares</td>
+<td>Resumen de métricas, áreas y porcentajes topográficos</td>
+<td>Comprueba interoperabilidad y síntesis tabular</td>
+</tr>
+</tbody>
+</table>
 <p>La comparación entre la implementación en Google Earth Engine y la implementación local en Python mostró resultados muy similares:</p>
 <table class="table">
 <colgroup>
@@ -654,6 +678,67 @@ OA = \frac{225 + 221}{519} = 0.859
 <td style="text-align: right;">1800</td>
 <td style="text-align: right;">1281</td>
 <td style="text-align: right;">519</td>
+</tr>
+</tbody>
+</table>
+<p>El resumen en Julia recuperó los principales indicadores tabulares derivados del flujo. Esta salida no recalcula la clasificación, sino que verifica que los productos exportados puedan ser leídos y sintetizados en un tercer lenguaje del curso.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Indicador</th>
+<th style="text-align: right;">GEE</th>
+<th style="text-align: right;">Python</th>
+<th style="text-align: right;">Julia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Exactitud global</td>
+<td style="text-align: right;">0.859</td>
+<td style="text-align: right;">0.859</td>
+<td style="text-align: right;">0.859</td>
+</tr>
+<tr class="even">
+<td>Kappa</td>
+<td style="text-align: right;">0.719</td>
+<td style="text-align: right;">0.719</td>
+<td style="text-align: right;">0.719</td>
+</tr>
+<tr class="odd">
+<td>Muestras totales</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">1800</td>
+</tr>
+<tr class="even">
+<td>Muestras de entrenamiento</td>
+<td style="text-align: right;">1281</td>
+<td style="text-align: right;">1281</td>
+<td style="text-align: right;">1281</td>
+</tr>
+<tr class="odd">
+<td>Muestras de validación</td>
+<td style="text-align: right;">519</td>
+<td style="text-align: right;">519</td>
+<td style="text-align: right;">519</td>
+</tr>
+<tr class="even">
+<td>Área inundada final (ha)</td>
+<td style="text-align: right;">31103.13</td>
+<td style="text-align: right;">31103.13</td>
+<td style="text-align: right;">31103.13</td>
+</tr>
+<tr class="odd">
+<td>Área 0-5 m de elevación (%)</td>
+<td style="text-align: right;">80.69</td>
+<td style="text-align: right;">80.69</td>
+<td style="text-align: right;">80.69</td>
+</tr>
+<tr class="even">
+<td>Área 0-2 grados de pendiente (%)</td>
+<td style="text-align: right;">57.80</td>
+<td style="text-align: right;">57.80</td>
+<td style="text-align: right;">57.80</td>
 </tr>
 </tbody>
 </table>
@@ -922,134 +1007,134 @@ docs/             Notas metodológicas y flujo de ejecución</code></pre>
 </section>
 <section id="configuración-del-análisis-en-gee" class="level2" data-number="13.5">
 <h2 data-number="13.5" class="anchored" data-anchor-id="configuración-del-análisis-en-gee"><span class="header-section-number">13.5</span> Configuración del análisis en GEE</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> CONFIG <span class="op">=</span> {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">aoiAsset</span><span class="op">:</span> <span class="st">'projects/ee-vivianpenag/assets/AOI'</span><span class="op">,</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeStart</span><span class="op">:</span> <span class="st">'2026-01-01'</span><span class="op">,</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeEnd</span><span class="op">:</span> <span class="st">'2026-01-25'</span><span class="op">,</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventStart</span><span class="op">:</span> <span class="st">'2026-02-03'</span><span class="op">,</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventEnd</span><span class="op">:</span> <span class="st">'2026-02-18'</span><span class="op">,</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">exportFolder</span><span class="op">:</span> <span class="st">'Bajo_Sinu_Flood_RF'</span><span class="op">,</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> <span class="dv">13</span><span class="op">,</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">nSamplesPerClass</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeComposite</span><span class="op">:</span> <span class="st">'median'</span><span class="op">,</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventComposite</span><span class="op">:</span> <span class="st">'min'</span><span class="op">,</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">permanentWaterOccurrenceThreshold</span><span class="op">:</span> <span class="dv">95</span><span class="op">,</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">excludePermanentWaterInFinal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">applyConnectivityFilter</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minConnectedPixels</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">useOperaDswx</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaDswxCollection</span><span class="op">:</span> <span class="st">'OPERA/DSWX/L3_V1/S1'</span><span class="op">,</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaWaterBand</span><span class="op">:</span> <span class="st">'BWTR_Binary_water'</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> CONFIG <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">aoiAsset</span><span class="op">:</span> <span class="st">'projects/ee-vivianpenag/assets/AOI'</span><span class="op">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeStart</span><span class="op">:</span> <span class="st">'2026-01-01'</span><span class="op">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeEnd</span><span class="op">:</span> <span class="st">'2026-01-25'</span><span class="op">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventStart</span><span class="op">:</span> <span class="st">'2026-02-03'</span><span class="op">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventEnd</span><span class="op">:</span> <span class="st">'2026-02-18'</span><span class="op">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">exportFolder</span><span class="op">:</span> <span class="st">'Bajo_Sinu_Flood_RF'</span><span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> <span class="dv">13</span><span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">nSamplesPerClass</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeComposite</span><span class="op">:</span> <span class="st">'median'</span><span class="op">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventComposite</span><span class="op">:</span> <span class="st">'min'</span><span class="op">,</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">permanentWaterOccurrenceThreshold</span><span class="op">:</span> <span class="dv">95</span><span class="op">,</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">excludePermanentWaterInFinal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">applyConnectivityFilter</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minConnectedPixels</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">useOperaDswx</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaDswxCollection</span><span class="op">:</span> <span class="st">'OPERA/DSWX/L3_V1/S1'</span><span class="op">,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaWaterBand</span><span class="op">:</span> <span class="st">'BWTR_Binary_water'</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="construcción-de-la-referencia-opera-dswx-s1" class="level2" data-number="13.6">
 <h2 data-number="13.6" class="anchored" data-anchor-id="construcción-de-la-referencia-opera-dswx-s1"><span class="header-section-number">13.6</span> Construcción de la referencia OPERA DSWx-S1</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">buildOperaReference</span>() {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> dswx <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(CONFIG<span class="op">.</span><span class="at">operaDswxCollection</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterBounds</span>(aoi)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterDate</span>(CONFIG<span class="op">.</span><span class="at">eventStart</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">eventEnd</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">select</span>(CONFIG<span class="op">.</span><span class="at">operaWaterBand</span>)<span class="op">;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> dswx<span class="op">.</span><span class="fu">map</span>(<span class="kw">function</span>(img) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">var</span> valid <span class="op">=</span> img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">0</span>)<span class="op">.</span><span class="fu">or</span>(img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">1</span>))<span class="op">;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> img<span class="op">.</span><span class="fu">updateMask</span>(valid)<span class="op">;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">max</span>()</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">rename</span>(<span class="st">'class'</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">clip</span>(aoi)<span class="op">;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">buildOperaReference</span>() {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> dswx <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(CONFIG<span class="op">.</span><span class="at">operaDswxCollection</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterBounds</span>(aoi)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterDate</span>(CONFIG<span class="op">.</span><span class="at">eventStart</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">eventEnd</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">select</span>(CONFIG<span class="op">.</span><span class="at">operaWaterBand</span>)<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> dswx<span class="op">.</span><span class="fu">map</span>(<span class="kw">function</span>(img) {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">var</span> valid <span class="op">=</span> img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">0</span>)<span class="op">.</span><span class="fu">or</span>(img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">1</span>))<span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> img<span class="op">.</span><span class="fu">updateMask</span>(valid)<span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">max</span>()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">rename</span>(<span class="st">'class'</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">clip</span>(aoi)<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="entrenamiento-random-forest-en-gee" class="level2" data-number="13.7">
 <h2 data-number="13.7" class="anchored" data-anchor-id="entrenamiento-random-forest-en-gee"><span class="header-section-number">13.7</span> Entrenamiento Random Forest en GEE</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> samples <span class="op">=</span> stack<span class="op">.</span><span class="fu">stratifiedSample</span>({</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numPoints</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classBand</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">region</span><span class="op">:</span> aoi<span class="op">,</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">scale</span><span class="op">,</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classValues</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classPoints</span><span class="op">:</span> [CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span>]<span class="op">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span><span class="op">,</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">geometries</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tileScale</span><span class="op">:</span> <span class="dv">4</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> samples<span class="op">.</span><span class="fu">randomColumn</span>(<span class="st">'random'</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">seed</span>)<span class="op">;</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> training <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">lt</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> validation <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">gte</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> classifier <span class="op">=</span> ee<span class="op">.</span><span class="at">Classifier</span><span class="op">.</span><span class="fu">smileRandomForest</span>({</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numberOfTrees</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minLeafPopulation</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bagFraction</span><span class="op">:</span> <span class="fl">0.7</span><span class="op">,</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">train</span>({</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">features</span><span class="op">:</span> training<span class="op">,</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classProperty</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">inputProperties</span><span class="op">:</span> predictorBands</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> samples <span class="op">=</span> stack<span class="op">.</span><span class="fu">stratifiedSample</span>({</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numPoints</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classBand</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">region</span><span class="op">:</span> aoi<span class="op">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">scale</span><span class="op">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classValues</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classPoints</span><span class="op">:</span> [CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span>]<span class="op">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span><span class="op">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">geometries</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tileScale</span><span class="op">:</span> <span class="dv">4</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> samples<span class="op">.</span><span class="fu">randomColumn</span>(<span class="st">'random'</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">seed</span>)<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> training <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">lt</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> validation <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">gte</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> classifier <span class="op">=</span> ee<span class="op">.</span><span class="at">Classifier</span><span class="op">.</span><span class="fu">smileRandomForest</span>({</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numberOfTrees</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minLeafPopulation</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bagFraction</span><span class="op">:</span> <span class="fl">0.7</span><span class="op">,</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">train</span>({</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">features</span><span class="op">:</span> training<span class="op">,</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classProperty</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">inputProperties</span><span class="op">:</span> predictorBands</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="reproducción-local-del-rf-en-python" class="level2" data-number="13.8">
 <h2 data-number="13.8" class="anchored" data-anchor-id="reproducción-local-del-rf-en-python"><span class="header-section-number">13.8</span> Reproducción local del RF en Python</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> RandomForestClassifier(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">200</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="st">"sqrt"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    min_samples_leaf<span class="op">=</span><span class="dv">3</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    class_weight<span class="op">=</span><span class="st">"balanced"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">13</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>model.fit(train[PREDICTORS], train[<span class="st">"class"</span>])</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>predicted <span class="op">=</span> model.predict(valid[PREDICTORS])</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(valid[<span class="st">"class"</span>], predicted)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(valid[<span class="st">"class"</span>], predicted)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> confusion_matrix(valid[<span class="st">"class"</span>], predicted, labels<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> RandomForestClassifier(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="st">"sqrt"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    min_samples_leaf<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    class_weight<span class="op">=</span><span class="st">"balanced"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">13</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>model.fit(train[PREDICTORS], train[<span class="st">"class"</span>])</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>predicted <span class="op">=</span> model.predict(valid[PREDICTORS])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(valid[<span class="st">"class"</span>], predicted)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(valid[<span class="st">"class"</span>], predicted)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> confusion_matrix(valid[<span class="st">"class"</span>], predicted, labels<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="resumen-tabular-en-julia" class="level2" data-number="13.9">
 <h2 data-number="13.9" class="anchored" data-anchor-id="resumen-tabular-en-julia"><span class="header-section-number">13.9</span> Resumen tabular en Julia</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> CSV.<span class="fu">read</span>(metrics_path, DataFrame)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>elev <span class="op">=</span> CSV.<span class="fu">read</span>(elev_path, DataFrame)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> CSV.<span class="fu">read</span>(slope_path, DataFrame)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> CSV.<span class="fu">read</span>(samples_path, DataFrame)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    implementation <span class="op">=</span> [<span class="st">"Julia_summary"</span>],</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    area_flood_ha <span class="op">=</span> [metrics.area_flood_ha[<span class="fl">1</span>]],</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    accuracy_gee <span class="op">=</span> [metrics.accuracy[<span class="fl">1</span>]],</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    kappa_gee <span class="op">=</span> [metrics.kappa[<span class="fl">1</span>]],</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    n_samples <span class="op">=</span> [<span class="fu">nrow</span>(samples)],</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    n_training <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&lt;</span> <span class="fl">0.7</span>)],</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    n_validation <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&gt;=</span> <span class="fl">0.7</span>)]</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> CSV.<span class="fu">read</span>(metrics_path, DataFrame)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>elev <span class="op">=</span> CSV.<span class="fu">read</span>(elev_path, DataFrame)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> CSV.<span class="fu">read</span>(slope_path, DataFrame)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> CSV.<span class="fu">read</span>(samples_path, DataFrame)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    implementation <span class="op">=</span> [<span class="st">"Julia_summary"</span>],</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    area_flood_ha <span class="op">=</span> [metrics.area_flood_ha[<span class="fl">1</span>]],</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    accuracy_gee <span class="op">=</span> [metrics.accuracy[<span class="fl">1</span>]],</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    kappa_gee <span class="op">=</span> [metrics.kappa[<span class="fl">1</span>]],</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    n_samples <span class="op">=</span> [<span class="fu">nrow</span>(samples)],</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    n_training <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&lt;</span> <span class="fl">0.7</span>)],</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    n_validation <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&gt;=</span> <span class="fl">0.7</span>)]</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="anexo-e.-configuración-del-entorno-reproducible" class="level2" data-number="13.10">
 <h2 data-number="13.10" class="anchored" data-anchor-id="anexo-e.-configuración-del-entorno-reproducible"><span class="header-section-number">13.10</span> Anexo E. Configuración del entorno reproducible</h2>
 <p>El proyecto define un entorno reproducible propio mediante <code>docker/Dockerfile</code>, <code>docker-compose.project.yml</code> y <code>requirements.txt</code>. Este entorno no depende de la imagen de clase: parte de Ubuntu 24.04 e instala Python, GDAL, Quarto, LaTeX, Julia y las librerías necesarias para el flujo de procesamiento, postproceso y renderizado.</p>
 <p>Comando para construir y levantar el entorno propio:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.project.yml up <span class="at">--build</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.project.yml up <span class="at">--build</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>El servicio abre Jupyter Lab en <code>http://127.0.0.1:8890</code>.</p>
 <p>Comando para entrar al contenedor del proyecto:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_final bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_final bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Durante el desarrollo también se utilizó como respaldo el contenedor de clase <code>image_sig_unal:final</code>, disponible localmente en Docker. Para facilitar su uso desde la carpeta del proyecto se creó el archivo <code>docker-compose.local.yml</code>, que monta la carpeta <code>vpenag</code> en <code>/home/rstudio/work</code> y define como directorio de trabajo <code>/home/rstudio/work/Proyecto_final</code>.</p>
 <p>Comando para levantar el entorno de clase:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.local.yml up <span class="at">-d</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.local.yml up <span class="at">-d</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Comando para entrar al contenedor de clase:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_local bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_local bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Verificación del entorno:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/rstudio/work/Proyecto_final</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/00_check_environment.py</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/rstudio/work/Proyecto_final</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/00_check_environment.py</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>El entorno verificado incluyó Python 3.12.3, Quarto 1.4.550, <code>earthengine-api</code>, <code>geemap</code>, <code>geopandas</code>, <code>numpy</code>, <code>pandas</code>, <code>rasterio</code>, <code>scikit-learn</code> y <code>matplotlib</code>. Julia 1.10.4 también estuvo disponible con paquetes como <code>CSV</code>, <code>DataFrames</code>, <code>Rasters</code>, <code>ArchGDAL</code> y <code>Plots</code>.</p>
 <p>Las credenciales de Google Earth Engine no se versionan. Cualquier configuración local sensible debe guardarse en rutas ignoradas por git, como <code>credentials/</code> o <code>config/project_config.json</code>.</p>
 <p>Comandos principales del flujo:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/02_postprocess_metrics.py</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/03_rf_local_sklearn.py</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span> scripts/julia/04_postprocess_summary.jl</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render proyecto_final.qmd <span class="at">--to</span> html</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/02_postprocess_metrics.py</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/03_rf_local_sklearn.py</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span> scripts/julia/04_postprocess_summary.jl</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render proyecto_final.qmd <span class="at">--to</span> html</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="referencias" class="level1 unnumbered" data-number="14">

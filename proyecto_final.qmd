@@ -334,27 +334,7 @@ Dado el enfoque de Programación SIG, se priorizó que las salidas fueran genera
 
 El flujo metodológico general puede resumirse así:
 
-```text
-AOI Bajo Sinú + evento seleccionado
-        ↓
-Sentinel-1 preevento/evento + NASADEM + pendiente + OPERA DSWx-S1 + JRC GSW
-        ↓
-Construcción de predictores SAR y topográficos
-        ↓
-Muestreo estratificado agua/no agua y separación entrenamiento/validación
-        ↓
-Entrenamiento Random Forest en Google Earth Engine
-        ↓
-Clasificación inicial de agua del evento
-        ↓
-Exclusión de agua permanente y evaluación de conectividad
-        ↓
-Inundación temporal clasificada
-        ↓
-Área inundada, distribución topográfica y severidad relativa
-        ↓
-Mapas, tablas, métricas, apps GEE e informe reproducible en Quarto
-```
+![Flujo metodológico del proyecto.](outputs/figures/flujo_metodologico.png){width=100%}
 
 # Resultados
 
@@ -381,12 +361,33 @@ Además de la exactitud global, se calcularon métricas específicas para la cla
 
 ## Resultados de la verificación local en Python y el resumen en Julia
 
+La comparación entre Google Earth Engine, Python y Julia se planteó como una verificación de reproducibilidad e interoperabilidad. Cada herramienta cumplió un papel diferente dentro del flujo, por lo que no se interpretan como tres modelos espaciales independientes, sino como componentes complementarios de una misma cadena de análisis.
+
+| Herramienta | Rol en el proyecto | Producto principal | Alcance de la comparación |
+|---|---|---|---|
+| Google Earth Engine | Procesamiento ráster completo y clasificación espacial | Máscara de inundación, severidad, áreas y métricas RF | Resultado principal del análisis |
+| Python | Reentrenamiento local con muestras exportadas y postproceso | Métricas RF, importancia de variables, figuras y tablas limpias | Verifica comportamiento del modelo sobre las muestras |
+| Julia | Lectura y resumen de salidas tabulares | Resumen de métricas, áreas y porcentajes topográficos | Comprueba interoperabilidad y síntesis tabular |
+
 La comparación entre la implementación en Google Earth Engine y la implementación local en Python mostró resultados muy similares:
 
 | Implementación | Exactitud global | Kappa | Muestras | Entrenamiento | Validación |
 |---|---:|---:|---:|---:|---:|
 | GEE `smileRandomForest` | 0.859 | 0.719 | 1800 | 1281 | 519 |
 | Python `scikit-learn` | 0.859 | 0.719 | 1800 | 1281 | 519 |
+
+El resumen en Julia recuperó los principales indicadores tabulares derivados del flujo. Esta salida no recalcula la clasificación, sino que verifica que los productos exportados puedan ser leídos y sintetizados en un tercer lenguaje del curso.
+
+| Indicador | GEE | Python | Julia |
+|---|---:|---:|---:|
+| Exactitud global | 0.859 | 0.859 | 0.859 |
+| Kappa | 0.719 | 0.719 | 0.719 |
+| Muestras totales | 1800 | 1800 | 1800 |
+| Muestras de entrenamiento | 1281 | 1281 | 1281 |
+| Muestras de validación | 519 | 519 | 519 |
+| Área inundada final (ha) | 31103.13 | 31103.13 | 31103.13 |
+| Área 0-5 m de elevación (%) | 80.69 | 80.69 | 80.69 |
+| Área 0-2 grados de pendiente (%) | 57.80 | 57.80 | 57.80 |
 
 En Python, la matriz de confusión local fue:
 
