@@ -140,7 +140,7 @@ quarto render proyecto_final.qmd --to pdf
 
 ## Dependencias
 
-El entorno reproducible recomendado es Docker. El archivo `requirements.txt` se mantiene como referencia para una instalación local de Python, con rangos de versiones compatibles en lugar de pines estrictos. Para evitar diferencias entre sistemas operativos, la revisión principal debe hacerse mediante `docker-compose.project.yml`.
+El entorno reproducible recomendado es Docker. El archivo `requirements.txt` se mantiene como referencia para una instalación local de Python, con versiones fijadas según el entorno verificado del proyecto. Para evitar diferencias entre sistemas operativos, la revisión principal debe hacerse mediante `docker-compose.project.yml`.
 
 ## Credenciales
 

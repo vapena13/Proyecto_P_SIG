@@ -284,11 +284,27 @@ $$
 X = [VV_{pre}, VH_{pre}, VV_{evento}, VH_{evento}, \Delta VV, \Delta VH, R_{VV-VH}, DEM, Slope]
 $$
 
+La inspección visual de los predictores permitió revisar la coherencia espacial de las capas antes de entrenar el clasificador. La banda VV del evento muestra la respuesta SAR durante la ventana de inundación, mientras que la diferencia temporal entre evento y preevento permite resaltar cambios de retrodispersión potencialmente asociados a superficies húmedas o inundadas.
+
+![Compuesto Sentinel-1 VV durante la ventana del evento sobre el AOI.](outputs/figures/s1_vv_evento_aoi.png){width=75%}
+
+![Diferencia temporal de retrodispersión VV entre evento y preevento.](outputs/figures/cambio_vv_evemto_prevento.png){width=75%}
+
+La composición SAR RGB combina información de VV, VH y diferencia temporal para facilitar la interpretación conjunta de respuestas radar. Este producto no se usa como imagen óptica ni reemplaza las bandas individuales del modelo, sino que funciona como apoyo visual para revisar patrones espaciales de cambio.
+
+![Composición SAR RGB con VV, VH y diferencia temporal de VV.](outputs/figures/sar_rgb_vv_vh_dvv.png){width=75%}
+
+El componente topográfico se incorporó a partir de NASADEM, dado que la elevación condiciona la acumulación temporal de agua en planicies aluviales. Esta capa fue usada como predictor del Random Forest y como insumo para interpretar la distribución altitudinal de la inundación temporal.
+
+![Modelo digital de elevación NASADEM utilizado como predictor topográfico.](outputs/figures/NASADEM.png){width=75%}
+
 ## Muestras y clasificación Random Forest
 
 Las muestras de entrenamiento y validación se construyeron con apoyo de OPERA DSWx-S1, usando la banda `BWTR_Binary_water`. Este producto se empleó como referencia auxiliar de agua/no agua durante la ventana del evento. Se generaron 1800 muestras estratificadas: 1281 para entrenamiento y 519 para validación.
 
 El modelo se implementó en Google Earth Engine mediante `ee.Classifier.smileRandomForest`, con 200 árboles, población mínima de hoja igual a 3 y fracción de bolsa igual a 0.7.
+
+OPERA DSWx-S1 se mantuvo como referencia satelital auxiliar para orientar el muestreo, no como verdad de campo. Por ello, el documento interpreta las métricas como una comparación frente a un producto externo de agua superficial y no como validación independiente.
 
 ## Verificación local en Python y resumen en Julia
 
