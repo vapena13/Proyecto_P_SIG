@@ -1,0 +1,16 @@
+{
+  "earth_engine": {
+    "aoi_asset": "projects/ee-vivianpenag/assets/AOI",
+    "export_folder": "Bajo_Sinu_Flood_RF"
+  },
+  "event": {
+    "before_start": "2026-01-01",
+    "before_end": "2026-01-25",
+    "event_start": "2026-02-03",
+    "event_end": "2026-02-18"
+  },
+  "notes": {
+    "credentials": "Do not commit real credentials. Keep local credentials outside the repo or in ignored files.",
+    "opera_dswx": "Use OPERA DSWx only after confirming the Earth Engine collection id is available for the selected dates."
+  }
+}

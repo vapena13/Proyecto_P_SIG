@@ -1,95 +1,157 @@
-# Detección de áreas inundadas mediante imágenes Sentinel-1 y clasificación Random Forest en la Subzona Hidrográfica del Bajo Sinú, Colombia
+# Deteccion de areas inundadas en el Bajo Sinu
 
-Este repositorio contiene el proyecto final de la asignatura **Programación SIG**. El trabajo analiza la detección de áreas inundadas asociadas a un evento reciente en la **Subzona Hidrográfica del Bajo Sinú** mediante imágenes **Sentinel-1 SAR** y un clasificador **Random Forest**, implementando un flujo reproducible en **Google Earth Engine** y **Python**.
+Proyecto final de **Programacion SIG**. El repositorio implementa un flujo reproducible para detectar areas probablemente inundadas en la Subzona Hidrografica del Bajo Sinu, Colombia, usando Sentinel-1 SAR, OPERA DSWx-S1, NASADEM, JRC Global Surface Water y Random Forest.
 
-## Estructura del repositorio
+El flujo principal se ejecuta en Google Earth Engine. El postproceso, la generacion de figuras y la verificacion local del modelo se realizan en Python; Julia se usa como resumen tabular complementario. Tambien se incluyen plantillas para Earth Engine Apps y un script auxiliar para cargar capas desde QGIS con GEE Data Catalog.
+
+## Estructura
 
 ```text
 .
-├── README.md
-├── .gitignore
-├── proyecto_final.qmd
-├── proyecto_final.pdf
-├── apa.csl
-├── referencias.bib
-├── bibliografia/
-├── proyecto_final_files/
-├── scripts/
-└── outputs/
-
+|-- proyecto_final.qmd
+|-- proyecto_final.html
+|-- proyecto_final.pdf
+|-- referencias.bib
+|-- apa.csl
+|-- styles.css
+|-- requirements.txt
+|-- docker/
+|   `-- Dockerfile
+|-- docker-compose.project.yml
+|-- docker-compose.local.yml
+|-- config/
+|   `-- project_config.example.json
+|-- data/
+|   |-- vector/raw/
+|   `-- vector/processed/
+|-- docs/
+|   |-- flujo_ejecucion.md
+|   `-- nota_metodologica_inundacion_temporal.md
+|-- outputs/
+|   |-- rf/
+|   |-- tables/
+|   `-- figures/
+|-- scripts/
+|   |-- gee/
+|   |-- julia/
+|   |-- python/
+|   |-- qgis/
+|   `-- shp_to_geojson.py
+`-- proyecto_final_files/
 ```
 
-## Descripción de carpetas y archivos
+Las carpetas `maps/`, `no/`, `.quarto/`, archivos temporales de LaTeX, credenciales y documentos preliminares quedan fuera del control de versiones mediante `.gitignore`.
 
-- `proyecto_final.qmd`: Documento fuente en Quarto (contiene texto, código y referencias).
-- `proyecto_final.html`: Versión renderizada en HTML.
-- `proyecto_final.pdf`: Versión renderizada en PDF.
-- `referencias.bib`: Base bibliográfica en formato BibTeX.
-- `apa.csl`: Estilo de citación APA.
-- `scripts/`: Scripts de Python para procesamiento de datos (ej. conversión de formatos).
-- `data/`: Datos vectoriales (raw y processed).
-- `outputs/`: Mapas, tablas y productos derivados del análisis.
+## Entorno reproducible
 
-## Datos utilizados
-
-- **Imágenes principales:** Colección Sentinel-1 SAR GRD en Google Earth Engine (polarizaciones VV/VH).
-- **Delimitación:** Subzona Hidrográfica del Bajo Sinú (formato vectorial convertido a GeoJSON).
-- **Capas auxiliares:** Modelo digital de elevación, pendientes, cuerpos de agua permanentes.
-- **Fuentes:** IDEAM, IGAC, DANE, HydroSHEDS, Google Earth Engine.
-
-
-## Requisitos e instalación
-
-### Dependencias
-
-- Python 3.8+
-- Quarto (>= 1.3)
-- TeX Live (pdflatex) para generar PDF
-- Google Earth Engine (acceso a https://earthengine.google.com)
-
-### Paquetes Python
+La forma recomendada para reproducir el proyecto fuera del contenedor de clase es construir el Docker propio:
 
 ```bash
-earthengine-api
-geemap
-geopandas
-pandas
-numpy
-matplotlib
-rasterio
-scikit-learn
+docker compose -f docker-compose.project.yml up --build
 ```
 
-### Instalación
+El servicio abre Jupyter Lab en:
+
+```text
+http://127.0.0.1:8890
+```
+
+Entrar al contenedor:
 
 ```bash
-# Clonar o descargar el repositorio
-cd Proyecto_final
-
-# Crear entorno virtual (opcional pero recomendado)
-python -m venv venv
-source venv/bin/activate
-
-# Instalar dependencias
-pip install -r requirements.txt  # Si existe, o instalar manualmente
-pip install earthengine-api geemap geopandas pandas numpy matplotlib rasterio scikit-learn
+docker exec -it bajo_sinu_proyecto_final bash
 ```
 
-## Cómo usar
+Verificar entorno:
 
-.
-.
-.
+```bash
+cd /workspace
+python3 scripts/python/00_check_environment.py
+```
 
+Como respaldo, si existe la imagen local de clase `image_sig_unal:final`, se puede usar:
 
+```bash
+docker compose -f docker-compose.local.yml up -d
+docker exec -it bajo_sinu_proyecto_local bash
+```
 
-Autora
+## Flujo de ejecucion
 
-Viviana Andrea Peña González
+1. Ejecutar el flujo principal en Google Earth Engine:
 
-Contexto académico
+```text
+scripts/gee/01_bajo_sinu_flood_rf.js
+```
 
-Universidad Nacional de Colombia
-Maestría en Geomática
-Asignatura: Programación SIG
-Docente: Alexys Herleym Rodríguez Avellaneda
+2. Exportar a Google Drive los productos generados y descargarlos en:
+
+```text
+outputs/rf/
+```
+
+3. Ejecutar postproceso en Python:
+
+```bash
+python3 scripts/python/02_postprocess_metrics.py
+```
+
+4. Reproducir el Random Forest local con Python:
+
+```bash
+python3 scripts/python/03_rf_local_sklearn.py
+```
+
+5. Generar resumen tabular en Julia:
+
+```bash
+julia scripts/julia/04_postprocess_summary.jl
+```
+
+6. Renderizar el informe:
+
+```bash
+quarto render proyecto_final.qmd --to html
+quarto render proyecto_final.qmd --to pdf
+```
+
+## Productos
+
+- Mascara de inundacion temporal clasificada.
+- Raster de severidad relativa morfometrica.
+- Area inundada total.
+- Area inundada por rangos de elevacion.
+- Area inundada por rangos de pendiente.
+- Metricas del modelo Random Forest.
+- Comparacion GEE/Python y resumen Julia.
+- Figuras y mapas derivados en `outputs/figures/`.
+- Plantilla de visor GEE App y app interactiva.
+- Script auxiliar para cargar capas en QGIS mediante GEE Data Catalog.
+
+## Scripts principales
+
+- `scripts/gee/01_bajo_sinu_flood_rf.js`: flujo principal en Earth Engine.
+- `scripts/gee/02_bajo_sinu_app_template.js`: visor simple de resultados.
+- `scripts/gee/03_bajo_sinu_interactive_app.js`: app exploratoria con AOI y fechas editables.
+- `scripts/python/02_postprocess_metrics.py`: tablas limpias y figuras derivadas.
+- `scripts/python/03_rf_local_sklearn.py`: verificacion local del Random Forest.
+- `scripts/julia/04_postprocess_summary.jl`: resumen tabular complementario.
+- `scripts/qgis/gee_data_catalog_quick_layers.py`: capas rapidas para QGIS/GEE Data Catalog.
+
+## Credenciales
+
+No se versionan credenciales reales. Cualquier archivo local sensible debe guardarse en rutas ignoradas por git, como:
+
+```text
+credentials/
+config/project_config.json
+```
+
+El archivo versionado `config/project_config.example.json` funciona solo como plantilla.
+
+## Autora
+
+Viviana Andrea Pena Gonzalez  
+Universidad Nacional de Colombia  
+Maestria en Geomatica  
+Asignatura: Programacion SIG

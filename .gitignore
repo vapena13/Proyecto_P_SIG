@@ -1,4 +1,3 @@
-```gitignore
 # =========================
 # Sistema operativo
 # =========================
@@ -42,6 +41,22 @@ ENV/
 *.swp
 *.bak
 *~
+.codex_zip_review/
+
+# =========================
+# Credenciales y configuracion local sensible
+# =========================
+.env
+.env.*
+!.env.example
+credentials/
+secrets/
+*.key
+*.pem
+service-account*.json
+application_default_credentials.json
+earthengine-credentials.json
+config/project_config.json
 
 # =========================
 # Salidas compiladas opcionales
@@ -53,6 +68,9 @@ ENV/
 # =========================
 # Archivos auxiliares de LaTeX/PDF
 # =========================
+proyecto_final.tex
+cover.tex
+cover.html
 *.aux
 *.out
 *.toc
@@ -70,15 +88,22 @@ ENV/
 # *.tiff
 # *.zip
 # *.gpkg
+bajo_sinu_flood_rf_project.zip
+propuesta_proyecto_final.pdf
 
 # =========================
 # Carpeta de outputs temporales
 # Si quieres conservar outputs finales, deja esta línea comentada
 # =========================
 # outputs/
+outputs/rendered/
 no/
+maps/
 # =========================
 # Archivos auxiliares renderizados por Quarto
 # Mantén comentado si sí quieres incluirlos
 # =========================
 # proyecto_final_files/
+proyecto_final_files/figure-pdf/
+
+/.quarto/

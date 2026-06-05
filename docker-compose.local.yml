@@ -1,0 +1,19 @@
+services:
+  proyecto-final-local:
+    image: image_sig_unal:final
+    container_name: bajo_sinu_proyecto_local
+    working_dir: /home/rstudio/work/Proyecto_final
+    command: >
+      jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    volumes:
+      - ..:/home/rstudio/work
+    environment:
+      - RETICULATE_PYTHON=/usr/bin/python3
+      - QUARTO_PYTHON=/usr/bin/python3
+      - JULIA_HOME=/opt/julia/bin
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libcurl.so.4:/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+      - GKSwstype=100
+    ports:
+      - "127.0.0.1:8891:8888"
+    tty: true
+    stdin_open: true

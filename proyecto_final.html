@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -54,48 +88,145 @@ div.csl-indent {
 <script src="proyecto_final_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="proyecto_final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="proyecto_final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
   <li><a href="#introducción-y-justificación" id="toc-introducción-y-justificación" class="nav-link active" data-scroll-target="#introducción-y-justificación"><span class="header-section-number">1</span> Introducción y justificación</a></li>
-  <li><a href="#estado-del-arte-revisión-bibliográfica-preliminar" id="toc-estado-del-arte-revisión-bibliográfica-preliminar" class="nav-link" data-scroll-target="#estado-del-arte-revisión-bibliográfica-preliminar"><span class="header-section-number">2</span> Estado del arte / revisión bibliográfica preliminar</a></li>
-  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">3</span> Objetivos</a>
+  <li><a href="#marco-teórico" id="toc-marco-teórico" class="nav-link" data-scroll-target="#marco-teórico"><span class="header-section-number">2</span> Marco teórico</a>
   <ul class="collapse">
-  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general"><span class="header-section-number">3.1</span> Objetivo general</a></li>
-  <li><a href="#objetivos-específicos" id="toc-objetivos-específicos" class="nav-link" data-scroll-target="#objetivos-específicos"><span class="header-section-number">3.2</span> Objetivos específicos</a></li>
+  <li><a href="#radar-de-apertura-sintética" id="toc-radar-de-apertura-sintética" class="nav-link" data-scroll-target="#radar-de-apertura-sintética"><span class="header-section-number">2.1</span> Radar de apertura sintética</a></li>
+  <li><a href="#geometría-de-adquisición-retrodispersión-y-superficies-de-agua" id="toc-geometría-de-adquisición-retrodispersión-y-superficies-de-agua" class="nav-link" data-scroll-target="#geometría-de-adquisición-retrodispersión-y-superficies-de-agua"><span class="header-section-number">2.2</span> Geometría de adquisición, retrodispersión y superficies de agua</a></li>
+  <li><a href="#speckle-multilooking-y-filtros-sar" id="toc-speckle-multilooking-y-filtros-sar" class="nav-link" data-scroll-target="#speckle-multilooking-y-filtros-sar"><span class="header-section-number">2.3</span> Speckle, multilooking y filtros SAR</a></li>
+  <li><a href="#polarización-y-variables-sar-para-inundaciones" id="toc-polarización-y-variables-sar-para-inundaciones" class="nav-link" data-scroll-target="#polarización-y-variables-sar-para-inundaciones"><span class="header-section-number">2.4</span> Polarización y variables SAR para inundaciones</a></li>
+  <li><a href="#detección-de-cambios-con-sar" id="toc-detección-de-cambios-con-sar" class="nav-link" data-scroll-target="#detección-de-cambios-con-sar"><span class="header-section-number">2.5</span> Detección de cambios con SAR</a></li>
+  <li><a href="#clasificación-supervisada-y-severidad-relativa" id="toc-clasificación-supervisada-y-severidad-relativa" class="nav-link" data-scroll-target="#clasificación-supervisada-y-severidad-relativa"><span class="header-section-number">2.6</span> Clasificación supervisada y severidad relativa</a></li>
+  <li><a href="#severidad-relativa-morfométrica" id="toc-severidad-relativa-morfométrica" class="nav-link" data-scroll-target="#severidad-relativa-morfométrica"><span class="header-section-number">2.7</span> Severidad relativa morfométrica</a></li>
   </ul></li>
-  <li><a href="#área-de-estudio" id="toc-área-de-estudio" class="nav-link" data-scroll-target="#área-de-estudio"><span class="header-section-number">4</span> Área de estudio</a></li>
-  <li><a href="#fuentes-de-datos" id="toc-fuentes-de-datos" class="nav-link" data-scroll-target="#fuentes-de-datos"><span class="header-section-number">5</span> Fuentes de datos</a>
+  <li><a href="#estado-del-arte" id="toc-estado-del-arte" class="nav-link" data-scroll-target="#estado-del-arte"><span class="header-section-number">3</span> Estado del arte</a>
   <ul class="collapse">
-  <li><a href="#imágenes-principales" id="toc-imágenes-principales" class="nav-link" data-scroll-target="#imágenes-principales"><span class="header-section-number">5.1</span> Imágenes principales</a></li>
-  <li><a href="#delimitación-hidrográfica-y-capas-vectoriales-base" id="toc-delimitación-hidrográfica-y-capas-vectoriales-base" class="nav-link" data-scroll-target="#delimitación-hidrográfica-y-capas-vectoriales-base"><span class="header-section-number">5.2</span> Delimitación hidrográfica y capas vectoriales base</a></li>
-  <li><a href="#capas-auxiliares" id="toc-capas-auxiliares" class="nav-link" data-scroll-target="#capas-auxiliares"><span class="header-section-number">5.3</span> Capas auxiliares</a></li>
-  <li><a href="#documentación-y-trazabilidad" id="toc-documentación-y-trazabilidad" class="nav-link" data-scroll-target="#documentación-y-trazabilidad"><span class="header-section-number">5.4</span> Documentación y trazabilidad</a></li>
+  <li><a href="#sistemas-de-alerta-temprana-y-productos-satelitales-para-inundaciones" id="toc-sistemas-de-alerta-temprana-y-productos-satelitales-para-inundaciones" class="nav-link" data-scroll-target="#sistemas-de-alerta-temprana-y-productos-satelitales-para-inundaciones"><span class="header-section-number">3.1</span> Sistemas de alerta temprana y productos satelitales para inundaciones</a></li>
   </ul></li>
-  <li><a href="#metodología-propuesta" id="toc-metodología-propuesta" class="nav-link" data-scroll-target="#metodología-propuesta"><span class="header-section-number">6</span> Metodología propuesta</a>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">4</span> Objetivos</a>
   <ul class="collapse">
-  <li><a href="#fase-1.-delimitación-y-preparación-del-área-de-estudio" id="toc-fase-1.-delimitación-y-preparación-del-área-de-estudio" class="nav-link" data-scroll-target="#fase-1.-delimitación-y-preparación-del-área-de-estudio"><span class="header-section-number">6.1</span> Fase 1. Delimitación y preparación del área de estudio</a></li>
-  <li><a href="#fase-2.-consulta-y-selección-de-imágenes-sentinel-1" id="toc-fase-2.-consulta-y-selección-de-imágenes-sentinel-1" class="nav-link" data-scroll-target="#fase-2.-consulta-y-selección-de-imágenes-sentinel-1"><span class="header-section-number">6.2</span> Fase 2. Consulta y selección de imágenes Sentinel-1</a></li>
-  <li><a href="#fase-3.-construcción-de-variables-y-muestras-de-entrenamiento" id="toc-fase-3.-construcción-de-variables-y-muestras-de-entrenamiento" class="nav-link" data-scroll-target="#fase-3.-construcción-de-variables-y-muestras-de-entrenamiento"><span class="header-section-number">6.3</span> Fase 3. Construcción de variables y muestras de entrenamiento</a></li>
-  <li><a href="#fase-4.-clasificación-con-random-forest-y-evaluación-básica" id="toc-fase-4.-clasificación-con-random-forest-y-evaluación-básica" class="nav-link" data-scroll-target="#fase-4.-clasificación-con-random-forest-y-evaluación-básica"><span class="header-section-number">6.4</span> Fase 4. Clasificación con Random Forest y evaluación básica</a></li>
-  <li><a href="#fase-5.-generación-de-productos-cartográficos-y-documentación-reproducible" id="toc-fase-5.-generación-de-productos-cartográficos-y-documentación-reproducible" class="nav-link" data-scroll-target="#fase-5.-generación-de-productos-cartográficos-y-documentación-reproducible"><span class="header-section-number">6.5</span> Fase 5. Generación de productos cartográficos y documentación reproducible</a></li>
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general"><span class="header-section-number">4.1</span> Objetivo general</a></li>
+  <li><a href="#objetivos-específicos" id="toc-objetivos-específicos" class="nav-link" data-scroll-target="#objetivos-específicos"><span class="header-section-number">4.2</span> Objetivos específicos</a></li>
   </ul></li>
-  <li><a href="#lenguaje-de-programación-y-librerías-propuestas" id="toc-lenguaje-de-programación-y-librerías-propuestas" class="nav-link" data-scroll-target="#lenguaje-de-programación-y-librerías-propuestas"><span class="header-section-number">7</span> Lenguaje de programación y librerías propuestas</a></li>
-  <li><a href="#reproducibilidad" id="toc-reproducibilidad" class="nav-link" data-scroll-target="#reproducibilidad"><span class="header-section-number">8</span> Reproducibilidad</a></li>
-  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">9</span> Referencias</a></li>
+  <li><a href="#área-de-estudio" id="toc-área-de-estudio" class="nav-link" data-scroll-target="#área-de-estudio"><span class="header-section-number">5</span> Área de estudio</a></li>
+  <li><a href="#fuentes-de-datos" id="toc-fuentes-de-datos" class="nav-link" data-scroll-target="#fuentes-de-datos"><span class="header-section-number">6</span> Fuentes de datos</a></li>
+  <li><a href="#metodología" id="toc-metodología" class="nav-link" data-scroll-target="#metodología"><span class="header-section-number">7</span> Metodología</a>
+  <ul class="collapse">
+  <li><a href="#evento-ventanas-temporales-y-predictores" id="toc-evento-ventanas-temporales-y-predictores" class="nav-link" data-scroll-target="#evento-ventanas-temporales-y-predictores"><span class="header-section-number">7.1</span> Evento, ventanas temporales y predictores</a></li>
+  <li><a href="#muestras-y-clasificación-random-forest" id="toc-muestras-y-clasificación-random-forest" class="nav-link" data-scroll-target="#muestras-y-clasificación-random-forest"><span class="header-section-number">7.2</span> Muestras y clasificación Random Forest</a></li>
+  <li><a href="#verificación-local-en-python-y-resumen-en-julia" id="toc-verificación-local-en-python-y-resumen-en-julia" class="nav-link" data-scroll-target="#verificación-local-en-python-y-resumen-en-julia"><span class="header-section-number">7.3</span> Verificación local en Python y resumen en Julia</a></li>
+  <li><a href="#distinción-entre-agua-del-evento-e-inundación-temporal" id="toc-distinción-entre-agua-del-evento-e-inundación-temporal" class="nav-link" data-scroll-target="#distinción-entre-agua-del-evento-e-inundación-temporal"><span class="header-section-number">7.4</span> Distinción entre agua del evento e inundación temporal</a></li>
+  <li><a href="#productos-de-salida" id="toc-productos-de-salida" class="nav-link" data-scroll-target="#productos-de-salida"><span class="header-section-number">7.5</span> Productos de salida</a></li>
+  </ul></li>
+  <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados"><span class="header-section-number">8</span> Resultados</a>
+  <ul class="collapse">
+  <li><a href="#evaluación-del-modelo-random-forest" id="toc-evaluación-del-modelo-random-forest" class="nav-link" data-scroll-target="#evaluación-del-modelo-random-forest"><span class="header-section-number">8.1</span> Evaluación del modelo Random Forest</a></li>
+  <li><a href="#resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia" id="toc-resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia" class="nav-link" data-scroll-target="#resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia"><span class="header-section-number">8.2</span> Resultados de la verificación local en Python y el resumen en Julia</a></li>
+  <li><a href="#área-de-inundación-temporal" id="toc-área-de-inundación-temporal" class="nav-link" data-scroll-target="#área-de-inundación-temporal"><span class="header-section-number">8.3</span> Área de inundación temporal</a></li>
+  <li><a href="#distribución-por-elevación-y-pendiente" id="toc-distribución-por-elevación-y-pendiente" class="nav-link" data-scroll-target="#distribución-por-elevación-y-pendiente"><span class="header-section-number">8.4</span> Distribución por elevación y pendiente</a></li>
+  <li><a href="#severidad-relativa" id="toc-severidad-relativa" class="nav-link" data-scroll-target="#severidad-relativa"><span class="header-section-number">8.5</span> Severidad relativa</a></li>
+  </ul></li>
+  <li><a href="#discusión" id="toc-discusión" class="nav-link" data-scroll-target="#discusión"><span class="header-section-number">9</span> Discusión</a></li>
+  <li><a href="#limitaciones" id="toc-limitaciones" class="nav-link" data-scroll-target="#limitaciones"><span class="header-section-number">10</span> Limitaciones</a></li>
+  <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones"><span class="header-section-number">11</span> Conclusiones</a></li>
+  <li><a href="#producto-complementario-de-visualización" id="toc-producto-complementario-de-visualización" class="nav-link" data-scroll-target="#producto-complementario-de-visualización"><span class="header-section-number">12</span> Producto complementario de visualización</a></li>
+  <li><a href="#anexos" id="toc-anexos" class="nav-link" data-scroll-target="#anexos"><span class="header-section-number">13</span> Anexos</a>
+  <ul class="collapse">
+  <li><a href="#anexo-a.-lenguajes-y-librerías-utilizadas" id="toc-anexo-a.-lenguajes-y-librerías-utilizadas" class="nav-link" data-scroll-target="#anexo-a.-lenguajes-y-librerías-utilizadas"><span class="header-section-number">13.1</span> Anexo A. Lenguajes y librerías utilizadas</a></li>
+  <li><a href="#anexo-b.-reproducibilidad" id="toc-anexo-b.-reproducibilidad" class="nav-link" data-scroll-target="#anexo-b.-reproducibilidad"><span class="header-section-number">13.2</span> Anexo B. Reproducibilidad</a></li>
+  <li><a href="#anexo-c.-relación-con-los-temas-del-curso" id="toc-anexo-c.-relación-con-los-temas-del-curso" class="nav-link" data-scroll-target="#anexo-c.-relación-con-los-temas-del-curso"><span class="header-section-number">13.3</span> Anexo C. Relación con los temas del curso</a></li>
+  <li><a href="#anexo-d.-fragmentos-de-código-principales" id="toc-anexo-d.-fragmentos-de-código-principales" class="nav-link" data-scroll-target="#anexo-d.-fragmentos-de-código-principales"><span class="header-section-number">13.4</span> Anexo D. Fragmentos de código principales</a></li>
+  <li><a href="#configuración-del-análisis-en-gee" id="toc-configuración-del-análisis-en-gee" class="nav-link" data-scroll-target="#configuración-del-análisis-en-gee"><span class="header-section-number">13.5</span> Configuración del análisis en GEE</a></li>
+  <li><a href="#construcción-de-la-referencia-opera-dswx-s1" id="toc-construcción-de-la-referencia-opera-dswx-s1" class="nav-link" data-scroll-target="#construcción-de-la-referencia-opera-dswx-s1"><span class="header-section-number">13.6</span> Construcción de la referencia OPERA DSWx-S1</a></li>
+  <li><a href="#entrenamiento-random-forest-en-gee" id="toc-entrenamiento-random-forest-en-gee" class="nav-link" data-scroll-target="#entrenamiento-random-forest-en-gee"><span class="header-section-number">13.7</span> Entrenamiento Random Forest en GEE</a></li>
+  <li><a href="#reproducción-local-del-rf-en-python" id="toc-reproducción-local-del-rf-en-python" class="nav-link" data-scroll-target="#reproducción-local-del-rf-en-python"><span class="header-section-number">13.8</span> Reproducción local del RF en Python</a></li>
+  <li><a href="#resumen-tabular-en-julia" id="toc-resumen-tabular-en-julia" class="nav-link" data-scroll-target="#resumen-tabular-en-julia"><span class="header-section-number">13.9</span> Resumen tabular en Julia</a></li>
+  <li><a href="#anexo-e.-configuración-del-entorno-reproducible" id="toc-anexo-e.-configuración-del-entorno-reproducible" class="nav-link" data-scroll-target="#anexo-e.-configuración-del-entorno-reproducible"><span class="header-section-number">13.10</span> Anexo E. Configuración del entorno reproducible</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias"><span class="header-section-number">14</span> Referencias</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Otros formatos</h2><ul><li><a href="proyecto_final.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
 <main class="content" id="quarto-document-content">
+<section class="cover-page" aria-label="Portada">
+  <div class="cover-topline">
+    <span>Universidad Nacional de Colombia</span>
+    <span>Maestría en Geomática</span>
+  </div>
+
+  <div class="cover-main">
+    <p class="cover-kicker">Proyecto final · Programación SIG</p>
+    <h1>Detección de áreas inundadas mediante imágenes Sentinel-1 y clasificación Random Forest</h1>
+    <p class="cover-subtitle">Subzona Hidrográfica del Bajo Sinú, Colombia</p>
+  </div>
+
+  <div class="cover-tags" aria-label="Componentes metodológicos">
+    <span>Sentinel-1 SAR</span>
+    <span>Random Forest</span>
+    <span>Google Earth Engine</span>
+    <span>Python</span>
+  </div>
+
+  <div class="cover-meta">
+    <div>
+      <span>Presentado por</span>
+      <strong>Viviana Andrea Peña González</strong>
+    </div>
+    <div>
+      <span>Docente</span>
+      <strong>Alexys Herleym Rodríguez Avellaneda</strong>
+    </div>
+    <div>
+      <span>Fecha</span>
+      <strong>Junio de 2026</strong>
+    </div>
+  </div>
+</section>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -116,7 +247,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Fecha de publicación</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">7 de abril de 2026</p>
+      <p class="date">5 de junio de 2026</p>
     </div>
   </div>
   
@@ -128,66 +259,156 @@ div.csl-indent {
 </header>
 
 
-<!--
-::: {.titlepage}
-<br><br>
-<div style="text-align: center;">
-
-<span style="font-size:1.5em;"><b>Universidad Nacional de Colombia</b></span>  
-<br>
-Maestría en Geomática  
-<br>
-Asignatura: Programación SIG  
-<br>
-Docente: Alexys Herleym Rodríguez Avellaneda  
-<br><br><br>
-
-<span style="font-size:1.3em;"><b>Detección de áreas inundadas mediante imágenes Sentinel-1 y clasificación Random Forest en la Subzona Hidrográfica del Bajo Sinú, Colombia</b></span>  
-<br><br><br>
-
-Viviana Andrea Peña González  
-<br>
-`r format(Sys.Date(), "%d de %B de %Y")`  
-</div>
-:::
--->
 <section id="introducción-y-justificación" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introducción y justificación</h1>
 <p>Las inundaciones constituyen uno de los fenómenos hidrológicos con alto impacto territorial, social y ambiental en Colombia, especialmente en zonas con alta dinámica fluvial, ocupación de planicies de inundación y exposición de actividades humanas e infraestructura. En el departamento de Córdoba, el comportamiento del río Sinú ha generado afectaciones sobre áreas rurales y urbanas, por lo que el análisis espacial de este fenómeno resulta pertinente tanto desde una perspectiva territorial como metodológica.</p>
 <p>En el marco de esta problemática, la <strong>Subzona Hidrográfica del Bajo Sinú</strong> representa una unidad espacial adecuada para estudiar la distribución de áreas inundadas, ya que concentra procesos hidrológicos relevantes de la parte baja de la cuenca y ofrece una delimitación más precisa que analizar la cuenca completa.</p>
 <p>El uso de imágenes <strong>Sentinel-1</strong> es pertinente porque este sensor radar puede captar información de la superficie terrestre incluso en condiciones de nubosidad, una ventaja importante en eventos hidrometeorológicos. La literatura muestra que Sentinel-1 ha sido utilizado con éxito en cartografía rápida de inundaciones y en flujos automáticos de análisis con niveles de precisión aceptables <span class="citation" data-cites="li2018 alexandre2020">(<a href="#ref-alexandre2020" role="doc-biblioref">Alexandre et&nbsp;al., 2020</a>; <a href="#ref-li2018" role="doc-biblioref">Li et&nbsp;al., 2018</a>)</span>.</p>
 <p>Por otra parte, el algoritmo <strong>Random Forest</strong> constituye una alternativa metodológica adecuada para este trabajo, debido a su capacidad para manejar múltiples variables de entrada y su utilidad en problemas de clasificación de inundaciones con imágenes de percepción remota. Su complejidad es intermedia y compatible con el tiempo disponible, sin sacrificar rigurosidad analítica <span class="citation" data-cites="billah2023">(<a href="#ref-billah2023" role="doc-biblioref">Billah et&nbsp;al., 2023</a>)</span>.</p>
-<p>Con el fin de mantener un alcance viable, el proyecto se enfocará en <strong>un único evento reciente de inundación</strong> dentro de la Subzona Hidrográfica del Bajo Sinú, utilizando un número limitado de fechas e implementando un flujo reproducible en <strong>Google Earth Engine y Python</strong>. Este enfoque permite desarrollar un producto técnicamente sólido, coherente con el curso y factible dentro de un periodo de cuatro semanas. Además, el uso de Google Earth Engine fortalece el componente de reproducibilidad y facilita el procesamiento de imágenes satelitales en la nube <span class="citation" data-cites="gorelick2017">(<a href="#ref-gorelick2017" role="doc-biblioref">Gorelick et&nbsp;al., 2017</a>)</span>.</p>
+<p>Además del interés territorial del caso, el proyecto aporta un flujo reproducible de cartografía de inundaciones que integra variables SAR, información topográfica, una referencia satelital auxiliar y documentación programática. De esta manera, el énfasis no se limita al producto cartográfico final, sino también a la construcción de una cadena de procesamiento replicable.</p>
+<p>Con el fin de mantener un alcance viable, el proyecto se enfocó en <strong>un único evento reciente de inundación</strong> dentro de la Subzona Hidrográfica del Bajo Sinú, utilizando un número limitado de fechas e implementando un flujo reproducible en <strong>Google Earth Engine y Python</strong>. Este enfoque permitió desarrollar un producto técnicamente sólido, coherente con el curso y factible dentro de un periodo de cuatro semanas. Además, el uso de Google Earth Engine fortaleció el componente de reproducibilidad y facilitó el procesamiento de imágenes satelitales en la nube <span class="citation" data-cites="gorelick2017">(<a href="#ref-gorelick2017" role="doc-biblioref">Gorelick et&nbsp;al., 2017</a>)</span>.</p>
 </section>
-<section id="estado-del-arte-revisión-bibliográfica-preliminar" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Estado del arte / revisión bibliográfica preliminar</h1>
+<section id="marco-teórico" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Marco teórico</h1>
+<section id="radar-de-apertura-sintética" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="radar-de-apertura-sintética"><span class="header-section-number">2.1</span> Radar de apertura sintética</h2>
+<p>El radar de apertura sintética, conocido como <strong>SAR</strong> por sus siglas en inglés, es una tecnología activa de percepción remota que transmite pulsos electromagnéticos hacia la superficie terrestre y registra los ecos retrodispersados por los objetos presentes en la escena. A diferencia de los sensores ópticos pasivos, los sistemas SAR no dependen de la iluminación solar y pueden adquirir información durante el día o la noche. Además, por operar en longitudes de onda de microondas, ofrecen una capacidad importante para adquirir imágenes bajo condiciones de nubosidad, lo que los hace especialmente útiles para monitorear procesos dinámicos de la superficie terrestre <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
+<p>El principio de apertura sintética permite construir una antena virtual a partir del desplazamiento de la plataforma y del procesamiento coherente de múltiples ecos recibidos. De esta manera, el sistema genera una imagen de alta resolución que representa la reflectividad o retrodispersión de la escena observada. En términos generales, las áreas con alta retrodispersión aparecen como valores más intensos, mientras que superficies lisas que reflejan la energía fuera de la dirección del sensor tienden a presentar baja retrodispersión <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
+<p>En el caso de Sentinel-1, el uso de SAR es compatible con el objetivo de mapear inundaciones porque permite observar condiciones de la superficie durante o después de eventos de lluvia, incluso cuando la nubosidad limita sensores ópticos.</p>
+<p>Sentinel-1 opera en <strong>banda C</strong>, una región de microondas adecuada para observar cambios superficiales a escalas compatibles con el monitoreo ambiental. Su respuesta no depende únicamente de la presencia o ausencia de agua: también está controlada por la rugosidad, la humedad, la permitividad dieléctrica, el ángulo de incidencia y la geometría local del terreno. En superficies lisas, como agua abierta con poco viento, puede predominar una reflexión especular que reduce el retorno hacia el sensor; en cambio, vegetación, suelo húmedo, oleaje o estructuras urbanas pueden producir respuestas más intensas o ambiguas <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
+<p>De forma general, la respuesta radar de una superficie suele representarse mediante el coeficiente de retrodispersión <span class="math inline">\(\sigma^0\)</span>. Cuando se trabaja en decibeles, se expresa como:</p>
+<p><span class="math display">\[
+\sigma^0_{dB} = 10 \log_{10}(\sigma^0)
+\]</span></p>
+<p>En términos interpretativos, valores bajos de retrodispersión suelen asociarse con superficies lisas, como agua abierta, mientras que valores más altos tienden a relacionarse con vegetación, rugosidad superficial o estructuras que devuelven mayor energía al sensor.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/fig_sar_geometry.png" class="img-fluid figure-img" style="width:55.0%"></p>
+<figcaption>Geometría básica de adquisición SAR. Adaptado de Moreira et al.&nbsp;(2013).</figcaption>
+</figure>
+</div>
+</section>
+<section id="geometría-de-adquisición-retrodispersión-y-superficies-de-agua" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="geometría-de-adquisición-retrodispersión-y-superficies-de-agua"><span class="header-section-number">2.2</span> Geometría de adquisición, retrodispersión y superficies de agua</h2>
+<p>La señal SAR registrada depende de la interacción entre el pulso emitido y las propiedades físicas y eléctricas de la superficie. Entre los factores más relevantes se encuentran la geometría del objeto, la rugosidad superficial, la humedad, la constante dieléctrica y la longitud de onda empleada por el sensor. Moreira et al. <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">2013</a>)</span> señalan que la amplitud y la fase de la señal retrodispersada dependen de propiedades físicas como geometría y rugosidad, así como de propiedades eléctricas como la permitividad.</p>
+<p>Esta relación es central para la detección de inundaciones. Las superficies de agua abierta suelen comportarse como superficies relativamente lisas frente al radar, por lo que reflejan la energía en dirección especular y devuelven poca señal al sensor. Como resultado, en imágenes SAR las áreas inundadas o cuerpos de agua pueden aparecer con valores bajos de retrodispersión. Sin embargo, esta respuesta puede variar en presencia de vegetación inundada, zonas urbanas, sombras radar, rugosidad inducida por viento o mezclas de agua y cobertura terrestre.</p>
+<p>La geometría lateral de adquisición propia del SAR también introduce efectos como sombra, acortamiento y layover en áreas con relieve o estructuras verticales <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>. Aunque el Bajo Sinú corresponde principalmente a una zona de baja pendiente, estos elementos son relevantes para interpretar posibles errores o ambigüedades en la clasificación, especialmente en áreas urbanas o con vegetación.</p>
+</section>
+<section id="speckle-multilooking-y-filtros-sar" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="speckle-multilooking-y-filtros-sar"><span class="header-section-number">2.3</span> Speckle, multilooking y filtros SAR</h2>
+<p>El speckle es una característica propia de la imagen SAR coherente. Se produce por la suma de muchas respuestas elementales dentro de una misma celda de resolución, cuyas fases y amplitudes generan fluctuaciones fuertes entre píxeles vecinos. Aunque suele tratarse como ruido visual, no corresponde a un ruido aditivo simple, sino a un efecto asociado a la naturaleza coherente de la medición SAR <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
+<p>Para reducir este efecto se emplean técnicas como multilooking o filtros espaciales. Estas operaciones mejoran la interpretabilidad de la imagen, pero implican una pérdida o suavizado de detalle espacial. En este proyecto se asume esa limitación: la reducción de ruido puede estabilizar la clasificación, pero también puede eliminar señales pequeñas o lineales de inundación ribereña.</p>
+<p>En forma simplificada, el multilook puede entenderse como un promedio no coherente de varias observaciones parciales:</p>
+<p><span class="math display">\[
+I_{ML} = \frac{1}{L} \sum_{k=1}^{L} I_k
+\]</span></p>
+<p>Donde <span class="math inline">\(I_{ML}\)</span> es la intensidad multilook, <span class="math inline">\(I_k\)</span> es cada observación parcial y <span class="math inline">\(L\)</span> es el número de looks. A mayor número de looks, menor efecto visual del speckle, pero también menor detalle espacial.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/fig_speckle.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Esquema conceptual del speckle en imágenes SAR. Adaptado de Moreira et al.&nbsp;(2013).</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/fig_multilook.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Efecto del multilook sobre el speckle y la resolución espacial. Adaptado de Moreira et al.&nbsp;(2013).</figcaption>
+</figure>
+</div>
+</section>
+<section id="polarización-y-variables-sar-para-inundaciones" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="polarización-y-variables-sar-para-inundaciones"><span class="header-section-number">2.4</span> Polarización y variables SAR para inundaciones</h2>
+<p>Los sistemas SAR pueden transmitir y recibir señales con diferentes polarizaciones. En Sentinel-1, las polarizaciones VV y VH permiten observar respuestas distintas de la superficie. La polarización VV puede ser sensible a superficies abiertas y cambios de rugosidad, mientras que VH puede aportar información relacionada con dispersión volumétrica o interacción con vegetación.</p>
+<p>Por esta razón, el proyecto utiliza bandas VV y VH en dos momentos temporales: preevento y evento. A partir de ellas se derivan diferencias temporales y relaciones entre polarizaciones. Estas variables permiten representar cambios de retrodispersión asociados al paso de una condición previa a una condición posiblemente inundada.</p>
+<p>Las variables derivadas usadas en el proyecto pueden expresarse de forma general como:</p>
+<p><span class="math display">\[
+\Delta VV = VV_{evento} - VV_{pre}
+\]</span></p>
+<p><span class="math display">\[
+\Delta VH = VH_{evento} - VH_{pre}
+\]</span></p>
+<p><span class="math display">\[
+R_{VV-VH} = VV_{evento} - VH_{evento}
+\]</span></p>
+<p>Si las bandas ya están en dB, estas diferencias se interpretan directamente como cambios relativos de retrodispersión entre fechas y polarizaciones.</p>
+</section>
+<section id="detección-de-cambios-con-sar" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="detección-de-cambios-con-sar"><span class="header-section-number">2.5</span> Detección de cambios con SAR</h2>
+<p>La detección de cambios con SAR compara una imagen de referencia, usualmente preevento, con una imagen objetivo durante o después del evento. En cartografía de inundaciones, esta estrategia ayuda a distinguir cambios asociados al evento frente a cuerpos de agua permanentes o respuestas estables. Li et al. <span class="citation" data-cites="li2018">(<a href="#ref-li2018" role="doc-biblioref">2018</a>)</span> indican que estos métodos requieren imágenes comparables en sensor, órbita, polarización y cobertura, porque las diferencias geométricas o radiométricas pueden afectar el resultado.</p>
+<p>En términos operativos, la detección puede hacerse mediante diferencia, razón o log-ratio entre imágenes. En este proyecto, la lógica de cambio se incorpora dentro del stack de predictores del Random Forest, mediante variables como diferencia temporal de VV y diferencia temporal de VH.</p>
+<p>Una forma alternativa de expresar la detección de cambio es mediante la razón o log-ratio:</p>
+<p><span class="math display">\[
+LR = \log \left( \frac{\sigma^0_{evento}}{\sigma^0_{pre}} \right)
+\]</span></p>
+<p>Aunque el proyecto no clasificó con un umbral único sobre <span class="math inline">\(LR\)</span>, esta expresión resume la lógica física detrás de la comparación temporal de escenas SAR.</p>
+</section>
+<section id="clasificación-supervisada-y-severidad-relativa" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="clasificación-supervisada-y-severidad-relativa"><span class="header-section-number">2.6</span> Clasificación supervisada y severidad relativa</h2>
+<p>Random Forest es un algoritmo de clasificación supervisada basado en un conjunto de árboles de decisión. Cada árbol se entrena con subconjuntos aleatorios de muestras y variables, y la clasificación final se obtiene mediante votación. Esta estructura permite manejar múltiples predictores y reduce la dependencia de un único umbral.</p>
+<p>Belgiu y Dragut <span class="citation" data-cites="belgiu2016rf">(<a href="#ref-belgiu2016rf" role="doc-biblioref">2016</a>)</span> señalan que Random Forest es usado en percepción remota por su capacidad para manejar alta dimensionalidad y multicolinealidad, además de requerir pocos parámetros en comparación con otros clasificadores. Sin embargo, también advierten que el método es sensible al diseño de muestreo. Por ello, en este proyecto las métricas se interpretan como evaluación frente a una referencia satelital auxiliar, no como validación de campo.</p>
+<p>Para el reporte de desempeño se usaron métricas básicas de clasificación, especialmente exactitud global y coeficiente kappa:</p>
+<p><span class="math display">\[
+OA = \frac{VP + VN}{N}
+\]</span></p>
+<p><span class="math display">\[
+\kappa = \frac{p_o - p_e}{1 - p_e}
+\]</span></p>
+<p>Donde <span class="math inline">\(VP\)</span> son verdaderos positivos, <span class="math inline">\(VN\)</span> verdaderos negativos, <span class="math inline">\(N\)</span> el total de muestras, <span class="math inline">\(p_o\)</span> el acuerdo observado y <span class="math inline">\(p_e\)</span> el acuerdo esperado por azar.</p>
+</section>
+<section id="severidad-relativa-morfométrica" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="severidad-relativa-morfométrica"><span class="header-section-number">2.7</span> Severidad relativa morfométrica</h2>
+<p>La severidad relativa propuesta no corresponde a una modelación hidráulica. Se entiende como una interpretación morfométrica dentro de la máscara final de inundación temporal. En este sentido, las áreas inundadas ubicadas en baja elevación y baja pendiente se interpretan como zonas con mayor favorabilidad topográfica para acumulación o permanencia de agua.</p>
+<p>Esta aproximación permite incorporar el DEM y la pendiente al análisis sin ampliar el alcance hacia estimación de profundidad, volumen, velocidad o amenaza hidráulica formal. El resultado debe leerse como una clasificación exploratoria del patrón espacial detectado.</p>
+<p>De manera conceptual, la regla empleada puede resumirse así:</p>
+<p><span class="math display">\[
+S(x) = f\left(I(x), E(x), P(x)\right)
+\]</span></p>
+<p>con los siguientes criterios:</p>
+<ul>
+<li>Alta: si el píxel pertenece a la inundación temporal y además se ubica en baja elevación (<span class="math inline">\(E&lt;5\)</span> m) y baja pendiente (<span class="math inline">\(P&lt;2^\circ\)</span>).</li>
+<li>Media: si el píxel pertenece a la inundación temporal y solo cumple una de las dos condiciones anteriores.</li>
+<li>Baja: si el píxel pertenece a la inundación temporal, pero no cumple ninguna de las dos condiciones anteriores.</li>
+</ul>
+<p>Donde <span class="math inline">\(I(x)\)</span> indica si el píxel pertenece a la máscara de inundación temporal, <span class="math inline">\(E(x)\)</span> es la elevación y <span class="math inline">\(P(x)\)</span> la pendiente.</p>
+</section>
+</section>
+<section id="estado-del-arte" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Estado del arte</h1>
 <p>La cartografía de inundaciones mediante teledetección ha sido ampliamente desarrollada en las últimas décadas debido a la necesidad de identificar de manera rápida y confiable la extensión espacial de eventos extremos. En este campo, los sensores radar de apertura sintética (SAR) han adquirido una relevancia especial porque pueden operar independientemente de la cobertura nubosa y de la iluminación solar, condiciones que suelen limitar el uso de imágenes ópticas durante episodios de inundación.</p>
 <p>En particular, la misión <strong>Sentinel-1</strong> ha demostrado ser una fuente útil para estudios de inundación gracias a su resolución espacial, disponibilidad abierta y frecuencia de adquisición. Li et al.&nbsp;propusieron un enfoque automático de detección de cambio en datos Sentinel-1 para cartografía rápida de inundaciones, con resultados cercanos al 95% de exactitud global y un coeficiente kappa de 0.75, destacando la simplicidad, velocidad y reproducibilidad del método <span class="citation" data-cites="li2018">(<a href="#ref-li2018" role="doc-biblioref">Li et&nbsp;al., 2018</a>)</span>. Asimismo, Alexandre et al.&nbsp;mostraron que las cadenas de procesamiento automatizadas con Sentinel-1 y Python son confiables y relativamente simples de implementar en problemas de análisis de inundaciones <span class="citation" data-cites="alexandre2020">(<a href="#ref-alexandre2020" role="doc-biblioref">Alexandre et&nbsp;al., 2020</a>)</span>.</p>
 <p>Además de los métodos automáticos basados en umbrales o detección de cambio, la literatura también ha explorado la integración de algoritmos de aprendizaje automático. Entre ellos, <strong>Random Forest</strong> se ha utilizado con resultados positivos para clasificación de coberturas y evaluación de daños por inundación a partir de imágenes Sentinel, mostrando ventajas en precisión y aplicabilidad operativa <span class="citation" data-cites="billah2023">(<a href="#ref-billah2023" role="doc-biblioref">Billah et&nbsp;al., 2023</a>)</span>.</p>
 <p>En paralelo, las plataformas de computación en la nube han ampliado la escala y reproducibilidad de los análisis espaciales. <strong>Google Earth Engine</strong> se ha consolidado como una herramienta central para el procesamiento de grandes volúmenes de imágenes satelitales, ya que ofrece un catálogo amplio de datos, funciones integradas y acceso mediante JavaScript y Python. Gorelick et al.&nbsp;destacan que esta plataforma fue diseñada para facilitar análisis geoespaciales a escala planetaria y promover flujos de trabajo reproducibles sin depender del hardware local del usuario <span class="citation" data-cites="gorelick2017">(<a href="#ref-gorelick2017" role="doc-biblioref">Gorelick et&nbsp;al., 2017</a>)</span>.</p>
+<section id="sistemas-de-alerta-temprana-y-productos-satelitales-para-inundaciones" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sistemas-de-alerta-temprana-y-productos-satelitales-para-inundaciones"><span class="header-section-number">3.1</span> Sistemas de alerta temprana y productos satelitales para inundaciones</h2>
+<p>El análisis de inundaciones mediante sensores remotos no solo tiene utilidad cartográfica posterior al evento, sino que también puede integrarse en flujos más amplios de monitoreo, respuesta rápida y alerta temprana. NASA Lifelines recopila recursos orientados a la construcción de flujos de alerta por inundación, incluyendo tableros operativos, productos satelitales de monitoreo casi en tiempo real, series históricas, guías metodológicas y estudios de caso <span class="citation" data-cites="nasa_lifelines_2026">(<a href="#ref-nasa_lifelines_2026" role="doc-biblioref">NASA Lifelines, 2026</a>)</span>.</p>
+<p>Entre los recursos destacados se encuentran sistemas como Google Flood Hub, GloFAS y GFMS; datos de precipitación GPM IMERG; productos de extensión de inundación casi en tiempo real derivados de VIIRS y MODIS; y productos radar como OPERA DSWx-S1 para confirmar agua superficial bajo nubosidad o durante la noche. Estas fuentes cumplen funciones distintas: algunas se orientan al pronóstico fluvial, otras al monitoreo de precipitación y otras a la observación de agua superficial. Su aplicabilidad local depende de la escala, la resolución espacial, la disponibilidad temporal y la validación con información complementaria.</p>
+<p>Aunque el presente proyecto no desarrolla un sistema operacional de alerta temprana, sí se relaciona con esta lógica práctica porque genera una cadena reproducible para identificar la extensión espacial de áreas probablemente inundadas. La integración de Sentinel-1 SAR, OPERA DSWx-S1, DEM, pendiente y procesamiento en Google Earth Engine puede aportar insumos para diagnósticos rápidos, contraste de reportes institucionales, priorización de zonas afectadas y análisis posterior al evento, sin reemplazar sistemas hidrológicos de pronóstico ni modelaciones de profundidad o volumen de agua.</p>
 <p>De manera complementaria, revisiones recientes sobre integración de percepción remota y aprendizaje automático en estudios de inundación muestran que modelos como Random Forest, SVM y redes neuronales han sido ampliamente utilizados y presentan desempeños adecuados en contextos diversos, lo cual refuerza la vigencia del enfoque propuesto <span class="citation" data-cites="manyaka2026">(<a href="#ref-manyaka2026" role="doc-biblioref">Manyaka et&nbsp;al., 2026</a>)</span>.</p>
-<p>En conjunto, la revisión preliminar indica que existe respaldo metodológico suficiente para plantear un proyecto basado en cuatro ideas centrales: uso de Sentinel-1 para la detección de inundaciones, clasificación supervisada con Random Forest, automatización parcial del flujo de trabajo y documentación reproducible en entornos programáticos. La revisión será ampliada en la versión final del proyecto con artículos específicos sobre cartografía de inundaciones con imágenes SAR, clasificación supervisada y automatización geoespacial reproducible.</p>
+<p>En conjunto, la revisión indica que existe respaldo metodológico suficiente para un proyecto basado en cuatro ideas centrales: uso de Sentinel-1 para la detección de inundaciones, clasificación supervisada con Random Forest, automatización parcial del flujo de trabajo y documentación reproducible en entornos programáticos.</p>
 </section>
-<section id="objetivos" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Objetivos</h1>
-<section id="objetivo-general" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="objetivo-general"><span class="header-section-number">3.1</span> Objetivo general</h2>
+</section>
+<section id="objetivos" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Objetivos</h1>
+<section id="objetivo-general" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="objetivo-general"><span class="header-section-number">4.1</span> Objetivo general</h2>
 <p>Analizar la distribución espacial de áreas inundadas asociadas a un evento reciente en la Subzona Hidrográfica del Bajo Sinú mediante imágenes Sentinel-1 y un modelo Random Forest, a partir de un flujo reproducible implementado en Google Earth Engine y Python.</p>
 </section>
-<section id="objetivos-específicos" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="objetivos-específicos"><span class="header-section-number">3.2</span> Objetivos específicos</h2>
+<section id="objetivos-específicos" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="objetivos-específicos"><span class="header-section-number">4.2</span> Objetivos específicos</h2>
 <ol type="1">
 <li><p>Identificar y procesar imágenes Sentinel-1 y capas auxiliares pertinentes para la detección de áreas inundadas en la Subzona Hidrográfica del Bajo Sinú durante un evento reciente.</p></li>
 <li><p>Implementar y evaluar un modelo Random Forest para clasificar áreas inundadas y no inundadas, generando cartografía temática y métricas básicas del evento analizado.</p></li>
+<li><p>Cuantificar el área inundada y analizar su distribución por rangos de elevación y pendiente, con el fin de construir una aproximación de severidad relativa morfométrica del evento.</p></li>
 </ol>
 </section>
 </section>
-<section id="área-de-estudio" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Área de estudio</h1>
+<section id="área-de-estudio" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Área de estudio</h1>
 <p>El área de estudio corresponde a la <strong>Subzona Hidrográfica del Bajo Sinú</strong>, ubicada en el departamento de Córdoba, Colombia. Esta delimitación proporciona una unidad territorial más manejable que la cuenca completa del río Sinú, lo cual apoya tanto la interpretación espacial como la viabilidad operativa del proyecto.</p>
 <p>La elección de esta subzona responde a dos criterios principales. El primero es su pertinencia territorial, dado que el tramo bajo del río Sinú presenta condiciones propicias para la ocurrencia de inundaciones por su dinámica fluvial y por la presencia de áreas bajas y planicies susceptibles al anegamiento. El segundo es la factibilidad analítica, ya que trabajar sobre una subzona específica permite controlar de manera efectiva el volumen de datos, seleccionar un evento concreto, reducir el tiempo de procesamiento y simplificar la construcción de muestras de entrenamiento y validación.</p>
-<p>La delimitación final del polígono se realizó a partir de información geográfica en formato vectorial, posteriormente convertida a GeoJSON para su integración al flujo reproducible del proyecto. En la versión final del documento se incluye un mapa de la Subzona Hidrográfica del Bajo Sinú como referencia espacial del área de análisis.</p>
-<div id="b7f1aba9" class="cell" data-execution_count="1">
+<p>La delimitación final del polígono se realizó a partir de información geográfica en formato vectorial, posteriormente convertida a GeoJSON para su integración al flujo reproducible del proyecto. El mapa de localización incluido en esta sección sirve como referencia espacial del área de análisis.</p>
+<p>![Área de estudio: Subzona Hidrográfica del Bajo Sinú, departamento de Córdoba.]</p>
+<div id="58b1422d" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -197,54 +418,430 @@ Viviana Andrea Peña González
 </div>
 </div>
 </section>
-<section id="fuentes-de-datos" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Fuentes de datos</h1>
-<p>El proyecto se apoyará en fuentes de datos abiertas y reproducibles, seleccionadas de acuerdo con su utilidad directa para la detección de áreas inundadas.</p>
-<section id="imágenes-principales" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="imágenes-principales"><span class="header-section-number">5.1</span> Imágenes principales</h2>
-<p>La fuente principal será la colección <strong>Sentinel-1 SAR GRD</strong> disponible en <strong>Google Earth Engine</strong>, la cual se utilizará para identificar cambios en la retrodispersión asociados a áreas inundadas durante el evento seleccionado. Se priorizarán imágenes con polarización VV y/o VH, de acuerdo con la disponibilidad temporal y la pertinencia para el análisis.</p>
+<section id="fuentes-de-datos" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Fuentes de datos</h1>
+<p>El proyecto se apoyó en fuentes de datos abiertas y reproducibles, seleccionadas según su utilidad directa para la detección de áreas inundadas.</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 25%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fuente</th>
+<th>Tipo de dato</th>
+<th style="text-align: right;">Resolución / escala</th>
+<th>Periodo</th>
+<th>Uso dentro del proyecto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sentinel-1 SAR GRD</td>
+<td>Ráster SAR</td>
+<td style="text-align: right;">10 m nativo; análisis a 30 m</td>
+<td>Enero-febrero de 2026</td>
+<td>Retrodispersión preevento y evento en VV/VH</td>
+</tr>
+<tr class="even">
+<td>OPERA DSWx-S1</td>
+<td>Ráster de agua superficial</td>
+<td style="text-align: right;">30 m</td>
+<td>Ventana del evento</td>
+<td>Referencia auxiliar para muestras agua/no agua</td>
+</tr>
+<tr class="odd">
+<td>NASADEM</td>
+<td>Modelo digital de elevación</td>
+<td style="text-align: right;">30 m</td>
+<td>Producto estático</td>
+<td>Elevación para análisis topográfico</td>
+</tr>
+<tr class="even">
+<td><code>ee.Terrain.slope()</code></td>
+<td>Ráster derivado</td>
+<td style="text-align: right;">30 m</td>
+<td>Derivado de NASADEM</td>
+<td>Pendiente para severidad relativa</td>
+</tr>
+<tr class="odd">
+<td>JRC Global Surface Water</td>
+<td>Ráster histórico</td>
+<td style="text-align: right;">30 m</td>
+<td>Serie histórica JRC</td>
+<td>Exclusión de agua permanente mediante <code>occurrence</code></td>
+</tr>
+<tr class="even">
+<td>AOI Bajo Sinú</td>
+<td>Vector</td>
+<td style="text-align: right;">Subzona hidrográfica</td>
+<td>Producto local</td>
+<td>Área de estudio y máscara espacial</td>
+</tr>
+<tr class="odd">
+<td>GEE, Python, Julia y Quarto</td>
+<td>Entorno programático</td>
+<td style="text-align: right;">No aplica</td>
+<td>Flujo reproducible</td>
+<td>Procesamiento, verificación, resumen y documentación</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="delimitación-hidrográfica-y-capas-vectoriales-base" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="delimitación-hidrográfica-y-capas-vectoriales-base"><span class="header-section-number">5.2</span> Delimitación hidrográfica y capas vectoriales base</h2>
-<p>Se empleará la delimitación vectorial de la <strong>Subzona Hidrográfica del Bajo Sinú</strong> como máscara espacial principal del proyecto. Asimismo, se utilizarán capas básicas de contexto territorial, como departamentos o límites administrativos, con el fin de ubicar el área de estudio y apoyar la presentación cartográfica de los resultados.</p>
+<section id="metodología" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Metodología</h1>
+<section id="evento-ventanas-temporales-y-predictores" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="evento-ventanas-temporales-y-predictores"><span class="header-section-number">7.1</span> Evento, ventanas temporales y predictores</h2>
+<p>El análisis se enfocó en un evento de creciente del río Sinú ocurrido durante febrero de 2026. Para representar la condición previa al evento se utilizó una ventana entre el 1 y el 25 de enero de 2026, con 19 escenas Sentinel-1. Para la condición del evento se utilizó la ventana entre el 3 y el 18 de febrero de 2026, con 11 escenas Sentinel-1.</p>
+<p>El compuesto preevento se calculó mediante mediana temporal, mientras que el compuesto del evento se calculó con el valor mínimo de retrodispersión. Esta decisión permitió capturar píxeles que presentaron baja retrodispersión en alguna escena dentro de la ventana de inundación, evitando que una mediana temporal suavizara señales breves o localizadas.</p>
+<p>Para mantener una base de comparación homogénea, las colecciones preevento y evento se filtraron sobre la misma área de estudio, el modo de adquisición <code>IW</code> y la disponibilidad simultánea de las polarizaciones <code>VV</code> y <code>VH</code>. Los compuestos temporales también reducen la dependencia de una única escena y parte de la variabilidad local asociada al speckle. No obstante, el flujo no restringió explícitamente la dirección orbital ni el número de órbita relativa, por lo que diferencias residuales en la geometría de observación pueden contribuir a algunos cambios de retrodispersión.</p>
+<p>El stack de predictores usado por el modelo Random Forest incluyó nueve bandas: VV y VH preevento, VV y VH del evento, diferencia temporal de VV, diferencia temporal de VH, relación VV-VH del evento, elevación y pendiente. La elevación se obtuvo de NASADEM y la pendiente se derivó mediante <code>ee.Terrain.slope()</code>.</p>
+<p>En notación resumida, el stack puede escribirse como:</p>
+<p><span class="math display">\[
+X = [VV_{pre}, VH_{pre}, VV_{evento}, VH_{evento}, \Delta VV, \Delta VH, R_{VV-VH}, DEM, Slope]
+\]</span></p>
 </section>
-<section id="capas-auxiliares" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="capas-auxiliares"><span class="header-section-number">5.3</span> Capas auxiliares</h2>
-<p>De forma complementaria, podrán considerarse máscaras de cuerpos de agua permanentes u otras capas auxiliares únicamente si su uso contribuye de manera clara a mejorar la interpretación o la clasificación de las áreas inundadas. La incorporación de estas capas no constituye un componente central del proyecto, sino un apoyo opcional sujeto a su utilidad real en el análisis.</p>
+<section id="muestras-y-clasificación-random-forest" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="muestras-y-clasificación-random-forest"><span class="header-section-number">7.2</span> Muestras y clasificación Random Forest</h2>
+<p>Las muestras de entrenamiento y validación se construyeron con apoyo de OPERA DSWx-S1, usando la banda <code>BWTR_Binary_water</code>. Este producto se empleó como referencia auxiliar de agua/no agua durante la ventana del evento. Se generaron 1800 muestras estratificadas: 1281 para entrenamiento y 519 para validación.</p>
+<p>El modelo se implementó en Google Earth Engine mediante <code>ee.Classifier.smileRandomForest</code>, con 200 árboles, población mínima de hoja igual a 3 y fracción de bolsa igual a 0.7.</p>
 </section>
-<section id="documentación-y-trazabilidad" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="documentación-y-trazabilidad"><span class="header-section-number">5.4</span> Documentación y trazabilidad</h2>
-<p>Todas las fuentes utilizadas serán documentadas indicando su origen, formato, periodo temporal y función dentro del flujo metodológico, con el fin de garantizar la trazabilidad y reproducibilidad del proyecto.</p>
+<section id="verificación-local-en-python-y-resumen-en-julia" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="verificación-local-en-python-y-resumen-en-julia"><span class="header-section-number">7.3</span> Verificación local en Python y resumen en Julia</h2>
+<p>Con el fin de mantener la coherencia con el planteamiento inicial del proyecto, las muestras exportadas desde Google Earth Engine también se usaron para entrenar un Random Forest local en Python mediante <code>scikit-learn</code>. Esta verificación no reemplaza el mapa generado en GEE, ya que el procesamiento espacial y la clasificación sobre el raster completo se realizaron en la nube. Sin embargo, permite comprobar que el comportamiento del modelo es reproducible a partir de las muestras exportadas.</p>
+<p>Adicionalmente, se preparó un resumen de postproceso en Julia usando <code>CSV.jl</code> y <code>DataFrames.jl</code>. Este paso no buscó reemplazar la clasificación principal, sino mostrar que las salidas tabulares del proyecto pueden ser leídas y resumidas en otro lenguaje dentro del mismo entorno reproducible.</p>
+</section>
+<section id="distinción-entre-agua-del-evento-e-inundación-temporal" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="distinción-entre-agua-del-evento-e-inundación-temporal"><span class="header-section-number">7.4</span> Distinción entre agua del evento e inundación temporal</h2>
+<p>El Random Forest entrenado con OPERA DSWx-S1 clasifica inicialmente píxeles de agua y no agua observados durante el evento. Esta salida puede incluir cuerpos de agua permanentes, ciénagas y humedales, por lo que no equivale directamente a una máscara de inundación temporal.</p>
+<p>Para aproximar la inundación temporal, se excluyeron píxeles de agua permanente usando <code>JRC/GSW1_4/GlobalSurfaceWater</code>, banda <code>occurrence</code>, con un umbral de 95%. También se evaluó un filtro de conectividad de 8 píxeles conectados para reducir ruido espacial, pero no se aplicó al producto final porque eliminaba patrones pequeños y lineales potencialmente asociados con inundación ribereña o urbana, especialmente cerca de Montería.</p>
+<p>El cálculo del área se resume con:</p>
+<p><span class="math display">\[
+A_{ha} = \frac{N_{pix} \cdot r^2}{10\,000}
+\]</span></p>
+<p>Donde <span class="math inline">\(N_{pix}\)</span> es el número de píxeles clasificados como inundación y <span class="math inline">\(r\)</span> es la resolución espacial en metros. Para Sentinel-1 remuestreado a 30 m, cada píxel equivale a 900 m<span class="math inline">\(^2\)</span> o 0.09 ha.</p>
+</section>
+<section id="productos-de-salida" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="productos-de-salida"><span class="header-section-number">7.5</span> Productos de salida</h2>
+<p>Las salidas finales del proyecto se generaron mediante scripts en Google Earth Engine y Python. Los productos principales corresponden a: i) un ráster de inundación temporal clasificada, ii) un ráster de severidad relativa morfométrica, iii) una tabla de métricas del modelo Random Forest, iv) una tabla de área inundada total y v) tablas de distribución del área inundada por rangos de elevación y pendiente.</p>
+<p>Dado el enfoque de Programación SIG, se priorizó que las salidas fueran generadas por código, evitando depender de procesos manuales para producir resultados intermedios y finales. Esta decisión permite repetir el flujo con ajustes mínimos sobre nuevas ventanas temporales o sobre otra delimitación espacial, siempre que se mantengan disponibles las fuentes de datos utilizadas.</p>
+<p>El flujo metodológico general puede resumirse así:</p>
+<pre class="text"><code>AOI Bajo Sinú + evento seleccionado
+        ↓
+Sentinel-1 preevento/evento + NASADEM + pendiente + OPERA DSWx-S1 + JRC GSW
+        ↓
+Construcción de predictores SAR y topográficos
+        ↓
+Muestreo estratificado agua/no agua y separación entrenamiento/validación
+        ↓
+Entrenamiento Random Forest en Google Earth Engine
+        ↓
+Clasificación inicial de agua del evento
+        ↓
+Exclusión de agua permanente y evaluación de conectividad
+        ↓
+Inundación temporal clasificada
+        ↓
+Área inundada, distribución topográfica y severidad relativa
+        ↓
+Mapas, tablas, métricas, apps GEE e informe reproducible en Quarto</code></pre>
 </section>
 </section>
-<section id="metodología-propuesta" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Metodología propuesta</h1>
-<p>La metodología se organizará en cinco fases, orientadas a construir un flujo de trabajo reproducible y factible dentro del tiempo disponible.</p>
-<section id="fase-1.-delimitación-y-preparación-del-área-de-estudio" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="fase-1.-delimitación-y-preparación-del-área-de-estudio"><span class="header-section-number">6.1</span> Fase 1. Delimitación y preparación del área de estudio</h2>
-<p>Se obtendrá la capa vectorial de la Subzona Hidrográfica del Bajo Sinú y se prepararán capas base para la representación cartográfica.</p>
+<section id="resultados" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Resultados</h1>
+<p>En esta sección se presentan los productos principales generados por el flujo reproducible implementado en Google Earth Engine, Python, Julia y Quarto. Primero se reporta la evaluación del clasificador Random Forest a partir de la referencia auxiliar utilizada; después se muestran los resultados cartográficos de la inundación temporal clasificada, las estimaciones de área y su distribución por rangos de elevación y pendiente. Finalmente, se presenta la severidad relativa morfométrica como producto complementario de interpretación espacial, aclarando su carácter exploratorio y no hidráulico.</p>
+<section id="evaluación-del-modelo-random-forest" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="evaluación-del-modelo-random-forest"><span class="header-section-number">8.1</span> Evaluación del modelo Random Forest</h2>
+<p>La evaluación frente a OPERA DSWx-S1 produjo una exactitud global de 0.859 y un coeficiente kappa de 0.719.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Referencia / clasificación</th>
+<th style="text-align: right;">No agua</th>
+<th style="text-align: right;">Agua</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>No agua</td>
+<td style="text-align: right;">225</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td>Agua</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">221</td>
+</tr>
+</tbody>
+</table>
+<p>El coeficiente kappa se reporta como métrica complementaria por su uso frecuente en clasificación de imágenes. Sin embargo, la interpretación principal se basa en la matriz de confusión y en las precisiones por clase, dado que OPERA DSWx-S1 se utiliza como referencia auxiliar y no como verdad de campo.</p>
+<p>Con la matriz anterior, la exactitud global se calcula como:</p>
+<p><span class="math display">\[
+OA = \frac{225 + 221}{519} = 0.859
+\]</span></p>
+<p>Además de la exactitud global, se calcularon métricas específicas para la clase agua, que es la categoría de mayor interés para este proyecto. La precisión de usuario para agua fue de 0.888, la sensibilidad o precisión de productor fue de 0.831 y el F1-score aproximado fue de 0.858. Estos valores indican una capacidad adecuada para detectar superficies inundadas, aunque persisten errores de omisión y comisión asociados a la complejidad radiométrica de algunas coberturas, bordes de agua, vegetación inundada o superficies con baja retrodispersión.</p>
 </section>
-<section id="fase-2.-consulta-y-selección-de-imágenes-sentinel-1" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="fase-2.-consulta-y-selección-de-imágenes-sentinel-1"><span class="header-section-number">6.2</span> Fase 2. Consulta y selección de imágenes Sentinel-1</h2>
-<p>En Google Earth Engine se consultará la colección Sentinel-1 filtrada por la subzona, rango temporal y polarización, para identificar dos o tres fechas clave de un evento reciente de inundación.</p>
+<section id="resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia"><span class="header-section-number">8.2</span> Resultados de la verificación local en Python y el resumen en Julia</h2>
+<p>La comparación entre la implementación en Google Earth Engine y la implementación local en Python mostró resultados muy similares:</p>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Implementación</th>
+<th style="text-align: right;">Exactitud global</th>
+<th style="text-align: right;">Kappa</th>
+<th style="text-align: right;">Muestras</th>
+<th style="text-align: right;">Entrenamiento</th>
+<th style="text-align: right;">Validación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GEE <code>smileRandomForest</code></td>
+<td style="text-align: right;">0.859</td>
+<td style="text-align: right;">0.719</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">1281</td>
+<td style="text-align: right;">519</td>
+</tr>
+<tr class="even">
+<td>Python <code>scikit-learn</code></td>
+<td style="text-align: right;">0.859</td>
+<td style="text-align: right;">0.719</td>
+<td style="text-align: right;">1800</td>
+<td style="text-align: right;">1281</td>
+<td style="text-align: right;">519</td>
+</tr>
+</tbody>
+</table>
+<p>En Python, la matriz de confusión local fue:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Referencia / clasificación</th>
+<th style="text-align: right;">No agua</th>
+<th style="text-align: right;">Agua</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>No agua</td>
+<td style="text-align: right;">219</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
+<td>Agua</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">227</td>
+</tr>
+</tbody>
+</table>
+<p>La importancia de variables estimada por el modelo local indicó que la elevación fue el predictor de mayor peso, seguida por las bandas SAR del evento, especialmente VH y VV. La contribución de la elevación (34.3%) indica que la topografía fue un factor determinante para diferenciar áreas con mayor probabilidad de inundación en el Bajo Sinú. Este resultado es coherente con la dinámica de las planicies aluviales, donde pequeñas variaciones altitudinales pueden condicionar la acumulación temporal de agua. La presencia de VH y VV del evento entre las variables más importantes confirma, a su vez, el valor de la información SAR para identificar cambios asociados a superficies inundadas.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th style="text-align: right;">Importancia Python RF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Elevación</td>
+<td style="text-align: right;">0.343</td>
+</tr>
+<tr class="even">
+<td>VH evento</td>
+<td style="text-align: right;">0.175</td>
+</tr>
+<tr class="odd">
+<td>VV preevento</td>
+<td style="text-align: right;">0.109</td>
+</tr>
+<tr class="even">
+<td>VV evento</td>
+<td style="text-align: right;">0.107</td>
+</tr>
+<tr class="odd">
+<td>VH preevento</td>
+<td style="text-align: right;">0.074</td>
+</tr>
+<tr class="even">
+<td>Relación VV-VH evento</td>
+<td style="text-align: right;">0.059</td>
+</tr>
+<tr class="odd">
+<td>Diferencia VH evento-preevento</td>
+<td style="text-align: right;">0.056</td>
+</tr>
+<tr class="even">
+<td>Diferencia VV evento-preevento</td>
+<td style="text-align: right;">0.039</td>
+</tr>
+<tr class="odd">
+<td>Pendiente</td>
+<td style="text-align: right;">0.036</td>
+</tr>
+</tbody>
+</table>
+<p>El script en Julia confirmó los principales valores de salida del flujo: área inundada final de 31103.13 ha, exactitud global de GEE de 0.859, kappa de 0.719, 1800 muestras totales, 1281 de entrenamiento y 519 de validación. También recuperó los porcentajes principales del análisis topográfico: 80.69% del área inundada entre 0 y 5 m de elevación y 57.80% en pendientes entre 0 y 2 grados.</p>
 </section>
-<section id="fase-3.-construcción-de-variables-y-muestras-de-entrenamiento" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="fase-3.-construcción-de-variables-y-muestras-de-entrenamiento"><span class="header-section-number">6.3</span> Fase 3. Construcción de variables y muestras de entrenamiento</h2>
-<p>A partir de las imágenes SAR se generarán variables de entrada para la clasificación. Se construirán muestras de entrenamiento para las clases <strong>inundado</strong> y <strong>no inundado</strong>, incorporando capas auxiliares si contribuyen directamente a la diferenciación.</p>
+<section id="área-de-inundación-temporal" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="área-de-inundación-temporal"><span class="header-section-number">8.3</span> Área de inundación temporal</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Producto</th>
+<th style="text-align: right;">Área (ha)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Agua del evento cruda</td>
+<td style="text-align: right;">110075.63</td>
+</tr>
+<tr class="even">
+<td>Sin agua permanente</td>
+<td style="text-align: right;">31103.13</td>
+</tr>
+<tr class="odd">
+<td>Con filtro de conectividad</td>
+<td style="text-align: right;">30175.94</td>
+</tr>
+<tr class="even">
+<td>Producto final de inundación temporal</td>
+<td style="text-align: right;">31103.13</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/mapa_inundacion_rf.png" class="img-fluid figure-img"></p>
+<figcaption>Mapa de inundación temporal clasificada mediante Random Forest.</figcaption>
+</figure>
+</div>
 </section>
-<section id="fase-4.-clasificación-con-random-forest-y-evaluación-básica" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="fase-4.-clasificación-con-random-forest-y-evaluación-básica"><span class="header-section-number">6.4</span> Fase 4. Clasificación con Random Forest y evaluación básica</h2>
-<p>Se implementará un modelo Random Forest para producir un mapa temático binario de áreas inundadas y no inundadas. La parametrización del modelo será sencilla, evitando procesos de optimización que amplíen innecesariamente el alcance. El resultado será evaluado mediante métricas básicas como matriz de confusión, precisión global y, si es posible, coeficiente kappa o una medida equivalente.</p>
+<section id="distribución-por-elevación-y-pendiente" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="distribución-por-elevación-y-pendiente"><span class="header-section-number">8.4</span> Distribución por elevación y pendiente</h2>
+<p>La mayor parte del área inundada se concentró en rangos bajos de elevación. El 80.69% del área clasificada como inundación temporal se ubicó entre 0 y 5 m, y el 14.68% entre 5 y 10 m. Esto es consistente con la dinámica esperada en planicies bajas asociadas al río Sinú.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/area_por_elevacion.png" class="img-fluid figure-img"></p>
+<figcaption>Área inundada por rangos de elevación.</figcaption>
+</figure>
+</div>
+<p>En relación con la pendiente, el 57.80% del área inundada se ubicó en pendientes entre 0 y 2 grados, mientras que el 35.86% se encontró entre 2 y 5 grados. Esto refuerza la interpretación de que la inundación detectada se concentra principalmente en zonas de baja pendiente.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/area_por_pendiente.png" class="img-fluid figure-img"></p>
+<figcaption>Área inundada por rangos de pendiente.</figcaption>
+</figure>
+</div>
 </section>
-<section id="fase-5.-generación-de-productos-cartográficos-y-documentación-reproducible" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="fase-5.-generación-de-productos-cartográficos-y-documentación-reproducible"><span class="header-section-number">6.5</span> Fase 5. Generación de productos cartográficos y documentación reproducible</h2>
-<p>El producto final propuesto es un mapa temático del evento, una cuantificación básica del área inundada y una breve interpretación del patrón espacial observado en la Subzona Hidrográfica del Bajo Sinú.</p>
+<section id="severidad-relativa" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="severidad-relativa"><span class="header-section-number">8.5</span> Severidad relativa</h2>
+<p>La severidad relativa se construyó únicamente dentro de la máscara final de inundación temporal. Las categorías no representan profundidad, volumen ni amenaza hidráulica, sino una lectura morfométrica basada en la combinación entre inundación detectada, elevación y pendiente.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/mapa_severidad_relativa.png" class="img-fluid figure-img"></p>
+<figcaption>Mapa de severidad relativa morfométrica.</figcaption>
+</figure>
+</div>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Clase</th>
+<th>Criterio conceptual</th>
+<th>Interpretación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alta</td>
+<td>Inundación en baja elevación y baja pendiente</td>
+<td>Mayor favorabilidad topográfica para acumulación o permanencia de agua</td>
+</tr>
+<tr class="even">
+<td>Media</td>
+<td>Inundación con una de las dos condiciones anteriores</td>
+<td>Condición morfométrica intermedia</td>
+</tr>
+<tr class="odd">
+<td>Baja</td>
+<td>Inundación en mayor elevación relativa o mayor pendiente</td>
+<td>Menor favorabilidad morfométrica relativa</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
-<section id="lenguaje-de-programación-y-librerías-propuestas" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Lenguaje de programación y librerías propuestas</h1>
-<p>El lenguaje principal será <strong>Python</strong>, por su versatilidad para integrar procesamiento geoespacial, análisis de datos y aprendizaje automático. El procesamiento de imágenes se apoyará en <strong>Google Earth Engine</strong>, debido a su capacidad para filtrar, visualizar y procesar imágenes satelitales de manera eficiente en la nube <span class="citation" data-cites="gorelick2017">(<a href="#ref-gorelick2017" role="doc-biblioref">Gorelick et&nbsp;al., 2017</a>)</span>.</p>
-<p>Las librerías propuestas son:</p>
+<section id="discusión" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Discusión</h1>
+<p>Los resultados muestran que la integración de Sentinel-1, variables topográficas y OPERA DSWx-S1 permite construir un flujo reproducible para identificar áreas probablemente inundadas durante el evento analizado. La exactitud global de 0.859 indica una correspondencia alta entre la clasificación Random Forest y la referencia auxiliar OPERA DSWx-S1. El kappa de 0.719 sugiere un acuerdo sustancial, aunque debe interpretarse con cautela porque la referencia utilizada no corresponde a verificación de campo.</p>
+<p>Estos resultados son consistentes con investigaciones previas que emplean Sentinel-1 para cartografía rápida de inundaciones. Li et al. <span class="citation" data-cites="li2018">(<a href="#ref-li2018" role="doc-biblioref">2018</a>)</span> reportaron exactitudes cercanas al 95% mediante un enfoque automático de detección de cambios, mientras que este estudio alcanzó una exactitud global de 85.9% mediante un clasificador Random Forest entrenado con referencia auxiliar satelital. La diferencia puede explicarse por las particularidades geomorfológicas del Bajo Sinú, la ausencia de validación de campo y el uso de un producto satelital auxiliar como referencia. Aun así, el desempeño obtenido confirma la utilidad de Sentinel-1 para apoyar el monitoreo de inundaciones en regiones tropicales donde la nubosidad limita el uso de sensores ópticos.</p>
+<p>La fuerte influencia de la elevación observada en el modelo también coincide con la relevancia hidrológica de la topografía como controlador de la extensión espacial de las inundaciones. En este caso, las variables topográficas no reemplazan la información radar, sino que la complementan al ayudar a reducir ambigüedades presentes en la respuesta SAR, especialmente en una zona de planicie con humedales, ciénagas, cauces y coberturas con respuestas radiométricas variables.</p>
+<p>La distinción entre agua del evento e inundación temporal fue una decisión metodológica importante. La clasificación cruda de agua alcanzó 110075.63 ha, pero este resultado incluía cuerpos de agua permanentes y superficies hídricas estables. Al excluir agua permanente con JRC Global Surface Water, el producto final se redujo a 31103.13 ha. Esta diferencia muestra que el objetivo no era mapear todos los cuerpos de agua presentes, sino aproximar la extensión de áreas temporalmente inundadas.</p>
+<p>El análisis por elevación y pendiente refuerza la coherencia espacial del resultado: más del 80% del área inundada se ubicó entre 0 y 5 m, y cerca del 58% en pendientes entre 0 y 2 grados. Estos patrones son consistentes con la ocurrencia de inundaciones en planicies bajas y sectores de baja pendiente asociados a la dinámica del río Sinú.</p>
+<p>La severidad relativa debe entenderse como una lectura morfométrica, no como una medición hidráulica. Las zonas clasificadas con severidad alta corresponden a áreas inundadas en condiciones de baja elevación y baja pendiente, lo que sugiere mayor favorabilidad topográfica para acumulación o permanencia de agua. No obstante, esta categoría no representa profundidad, velocidad de flujo, volumen ni nivel de daño.</p>
+<p>A diferencia de los enfoques de susceptibilidad a inundaciones, que buscan estimar la predisposición espacial del territorio a inundarse a partir de múltiples factores condicionantes, este proyecto se concentró en cartografiar un evento específico. Por ello, variables como distancia a drenajes, precipitación, uso del suelo o altura sobre el drenaje más cercano se reconocen como posibles extensiones, pero no se incorporaron al flujo final para mantener el alcance en la detección satelital y cuantificación espacial del evento analizado.</p>
+</section>
+<section id="limitaciones" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Limitaciones</h1>
+<p>El análisis depende de la ventana temporal seleccionada. Si la máxima extensión de la inundación ocurrió fuera de las fechas usadas, el modelo puede subestimar o desplazar espacialmente la señal. Además, el uso del compuesto mínimo del evento ayuda a capturar señales breves de agua, pero también puede aumentar confusiones con ruido SAR o superficies temporalmente oscuras.</p>
+<p>La interpretación también está condicionada por características propias de las imágenes SAR. El speckle puede introducir variabilidad local incluso en superficies relativamente homogéneas, mientras que la geometría lateral de adquisición puede producir sombra radar, acortamiento o layover en sectores específicos. Aunque estos efectos suelen ser menores en una zona predominantemente plana como el Bajo Sinú, pueden influir en bordes urbanos, vegetación ribereña, taludes y transiciones entre agua y suelo. Adicionalmente, la resolución espacial efectiva no debe confundirse con el tamaño de píxel: el cálculo de área a 30 m depende del remuestreo y de la escala de análisis, pero no implica que todos los objetos de ese tamaño puedan distinguirse de manera independiente.</p>
+<p>OPERA DSWx-S1 se utilizó como referencia auxiliar, no como verdad absoluta. El producto puede presentar incertidumbres en zonas urbanas, vegetación inundada, sombras radar, bordes de cuerpos de agua y áreas con condiciones complejas de retrodispersión. Por esta razón, las métricas del modelo deben leerse como evaluación frente a una referencia satelital auxiliar.</p>
+<p>Adicionalmente, las muestras de entrenamiento y validación derivan de la misma referencia auxiliar OPERA DSWx-S1. Por tanto, las métricas obtenidas reflejan principalmente la capacidad del modelo para reproducir dicho producto bajo el conjunto de predictores seleccionado, y no constituyen una validación completamente independiente frente a observaciones de campo. Futuras aplicaciones deberían incorporar datos externos, reportes institucionales, imágenes de muy alta resolución o verificación en campo para estimar con mayor robustez el desempeño real del clasificador.</p>
+<p>La exclusión de agua permanente mediante JRC Global Surface Water también tiene limitaciones. En eventos ribereños, algunas áreas cercanas al cauce pueden tener alta recurrencia de agua y al mismo tiempo verse afectadas por crecientes. Por ello se utilizó un umbral conservador de 95% y se evaluó, pero no se aplicó, un filtro de conectividad que eliminaba patrones locales potencialmente relevantes.</p>
+<p>Finalmente, el proyecto no estima profundidad, volumen de agua, velocidad de flujo ni amenaza hidráulica. Para abordar esos aspectos se requerirían datos hidrométricos, modelación hidráulica, superficies de agua o información de campo que exceden el alcance de este trabajo.</p>
+</section>
+<section id="conclusiones" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Conclusiones</h1>
+<p>El uso combinado de imágenes Sentinel-1, variables topográficas y clasificación Random Forest permitió identificar de manera consistente áreas probablemente inundadas en la Subzona Hidrográfica del Bajo Sinú. La integración de información SAR y geomorfométrica constituye una alternativa viable para el monitoreo reproducible de eventos de inundación en regiones tropicales con alta nubosidad.</p>
+<p>La incorporación de elevación y pendiente mejoró la capacidad interpretativa del análisis. La mayor parte de las áreas clasificadas como inundación temporal se concentró en sectores de baja altitud y baja pendiente, coherentes con la dinámica hidrológica esperada en planicies aluviales asociadas al río Sinú.</p>
+<p>La exclusión de cuerpos de agua permanentes fue fundamental para diferenciar inundación temporal de superficies hídricas estables. Esta decisión metodológica evitó que el producto final se redujera a una clasificación general agua/no agua y permitió obtener una representación espacial más cercana a la extensión temporal del evento analizado.</p>
+<p>Más allá del resultado cartográfico, el principal aporte del trabajo radica en la construcción de un flujo metodológico reproducible y transferible. La combinación de Google Earth Engine, Python, Julia, Quarto y Docker permite documentar, ejecutar y adaptar el procedimiento a nuevos eventos hidrológicos o a otras áreas de estudio mediante ajustes en los parámetros de entrada.</p>
+<p>Aunque los resultados muestran un desempeño satisfactorio frente a la referencia satelital empleada, el producto no reemplaza la validación de campo, los reportes institucionales ni una modelación hidráulica formal. Futuras aplicaciones deberían incorporar observaciones externas para reducir la incertidumbre y fortalecer la confiabilidad de las estimaciones.</p>
+</section>
+<section id="producto-complementario-de-visualización" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Producto complementario de visualización</h1>
+<p>Como producto complementario de visualización, se generó una aplicación simple en Google Earth Engine Apps para consultar el área de estudio y las capas principales del análisis. La aplicación puede ser actualizada posteriormente manteniendo el mismo enlace público:</p>
+<p><a href="https://ee-vivianpenag.projects.earthengine.app/view/bajosinuappinteractive">Aplicación web Bajo Sinú App Interactive</a></p>
+<p>La aplicación publicada corresponde a una versión interactiva que permite consultar el AOI, modificar fechas preevento y evento, ejecutar el flujo de clasificación y visualizar capas como Sentinel-1 del evento, diferencia temporal SAR, agua permanente JRC, agua del evento, inundación temporal y severidad relativa. Este producto no reemplaza el análisis metodológico ni constituye un sistema operacional de alerta temprana; funciona como visor de comunicación y exploración de resultados.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/GEE_app_inundacion.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Vista de la aplicación GEE con la capa de inundación temporal.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="outputs/figures/GEE_app_severidad.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Vista de la aplicación GEE con la capa de severidad relativa.</figcaption>
+</figure>
+</div>
+<p>El repositorio incluye la plantilla <code>scripts/gee/03_bajo_sinu_interactive_app.js</code>, usada como base de la aplicación publicada.</p>
+</section>
+<section id="anexos" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Anexos</h1>
+<section id="anexo-a.-lenguajes-y-librerías-utilizadas" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="anexo-a.-lenguajes-y-librerías-utilizadas"><span class="header-section-number">13.1</span> Anexo A. Lenguajes y librerías utilizadas</h2>
+<p>El lenguaje principal del proyecto fue <strong>Python</strong>, por su versatilidad para integrar procesamiento geoespacial, análisis de datos, manejo de rásteres y documentación reproducible. El procesamiento principal de imágenes se realizó en <strong>Google Earth Engine</strong>, debido a su capacidad para filtrar, visualizar y procesar imágenes satelitales de manera eficiente en la nube <span class="citation" data-cites="gorelick2017">(<a href="#ref-gorelick2017" role="doc-biblioref">Gorelick et&nbsp;al., 2017</a>)</span>.</p>
+<p>Las librerías utilizadas o definidas en el entorno reproducible fueron:</p>
 <ul>
 <li><code>earthengine-api</code>, para conexión y consulta de datos en Google Earth Engine</li>
 <li><code>geemap</code>, para visualización y apoyo en la integración con GEE</li>
@@ -252,23 +849,188 @@ Viviana Andrea Peña González
 <li><code>pandas</code> y <code>numpy</code>, para manipulación de datos</li>
 <li><code>matplotlib</code>, para gráficos básicos y apoyo visual</li>
 <li><code>rasterio</code>, en caso de requerir manejo local de ráster exportados</li>
-<li><code>scikit-learn</code>, para implementar el modelo Random Forest</li>
+<li><code>scikit-learn</code>, como referencia del entorno de aprendizaje automático local</li>
 <li><code>quarto</code>, para la documentación y renderización del proyecto en <code>.qmd</code></li>
 </ul>
-<p>Para mantener la viabilidad del cronograma, se priorizará un flujo central basado en <strong>GEE + Python + scikit-learn</strong>, evitando incorporar pasos técnicos que no aporten directamente al cumplimiento de los objetivos.</p>
+<p>El flujo principal se organizó como <strong>GEE + Python + Quarto</strong>. Google Earth Engine se empleó para la clasificación Random Forest y exportación de productos; Python se utilizó para ordenar métricas, limpiar tablas y generar figuras auxiliares; Quarto integró texto, código, figuras, resultados y referencias en un documento reproducible.</p>
 </section>
-<section id="reproducibilidad" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Reproducibilidad</h1>
-<p>El proyecto se desarrollará bajo principios de ciencia abierta y reproducibilidad. Para ello, se estructurará un repositorio en GitHub que incluirá el archivo fuente en formato <code>.qmd</code>, sus salidas renderizadas en HTML y PDF, los scripts utilizados en cada fase del análisis y un archivo de dependencias del entorno, como <code>requirements.txt</code>. Esta organización permitirá que el flujo de trabajo pueda replicarse desde la delimitación del área de estudio hasta la generación de mapas y métricas espaciales.</p>
+<section id="anexo-b.-reproducibilidad" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="anexo-b.-reproducibilidad"><span class="header-section-number">13.2</span> Anexo B. Reproducibilidad</h2>
+<p>El proyecto se desarrolló bajo principios de reproducibilidad. El repositorio incluye el documento fuente en formato <code>.qmd</code>, scripts de Google Earth Engine, scripts de postproceso en Python, salidas tabulares, figuras y archivos de configuración del entorno.</p>
+<p>La ejecución local se verificó en un entorno propio del proyecto definido mediante <code>docker/Dockerfile</code>, <code>docker-compose.project.yml</code> y <code>requirements.txt</code>. Este contenedor parte de Ubuntu 24.04 e instala sus propias dependencias, por lo que no requiere la imagen de clase <code>image_sig_unal:final</code>. El archivo <code>docker-compose.local.yml</code> se conserva únicamente como respaldo. Las credenciales reales no se versionan; cualquier archivo local sensible debe ubicarse en rutas ignoradas por git.</p>
+<p>El flujo reproducible se organizó en los siguientes pasos:</p>
+<ol type="1">
+<li>Ejecutar <code>scripts/gee/01_bajo_sinu_flood_rf.js</code> en Google Earth Engine.</li>
+<li>Exportar rásteres, muestras, métricas y tablas a Google Drive.</li>
+<li>Guardar las salidas descargadas en <code>outputs/rf/</code>.</li>
+<li>Ejecutar <code>scripts/python/02_postprocess_metrics.py</code> para generar tablas limpias y figuras.</li>
+<li>Renderizar <code>proyecto_final.qmd</code> en HTML/PDF mediante Quarto.</li>
+</ol>
+<p>La estructura mínima del repositorio que soporta esta reproducción incluye:</p>
+<pre class="text"><code>scripts/gee/      Flujo principal en Earth Engine y apps
+scripts/python/   Verificación de entorno, postproceso y RF local
+scripts/julia/    Resumen tabular complementario
+outputs/rf/       Exportaciones principales desde GEE
+outputs/tables/   Tablas limpias generadas por Python y Julia
+outputs/figures/  Figuras, mapas derivados y thumbnail de la app
+docker/           Dockerfile del entorno reproducible propio
+docs/             Notas metodológicas y flujo de ejecución</code></pre>
 </section>
-<section id="referencias" class="level1 unnumbered" data-number="9">
+<section id="anexo-c.-relación-con-los-temas-del-curso" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="anexo-c.-relación-con-los-temas-del-curso"><span class="header-section-number">13.3</span> Anexo C. Relación con los temas del curso</h2>
+<p>El proyecto integra varios componentes trabajados en Programación SIG. La dimensión vectorial aparece en la delimitación del área de estudio mediante el polígono de la Subzona Hidrográfica del Bajo Sinú y en el uso de esa geometría como máscara espacial. La dimensión ráster se aborda mediante Sentinel-1, NASADEM, pendiente, OPERA DSWx-S1, JRC Global Surface Water y los productos clasificados de inundación y severidad.</p>
+<p>El geoprocesamiento se evidencia en operaciones de filtrado espacial y temporal, recorte por AOI, construcción de compuestos, álgebra de mapas, cálculo de pendientes, reclasificación, enmascaramiento y estimación de áreas. El componente de programación se expresa en la parametrización del flujo, la generación automática de muestras, el entrenamiento del modelo, la exportación de productos y el postproceso en Python.</p>
+<p>El proyecto también incorpora una lógica de stack ráster multibanda, equivalente a un cubo simplificado de variables espaciales y temporales: bandas SAR preevento, bandas SAR del evento, diferencias temporales, elevación y pendiente. Finalmente, Quarto permite documentar el análisis como un informe reproducible, conectando texto, código, figuras y resultados.</p>
+<p>Como valor agregado, el flujo se contrastó entre herramientas: Google Earth Engine ejecutó la clasificación espacial completa, Python reprodujo el entrenamiento Random Forest con las muestras exportadas y Julia resumió productos tabulares del postproceso. Esta comparación permitió mostrar interoperabilidad entre lenguajes sin duplicar innecesariamente todo el procesamiento ráster.</p>
+<p>Por esta integración entre datos vectoriales, datos ráster, geoprocesamiento, automatización, clasificación supervisada y documentación reproducible, el proyecto se ajusta de forma directa a los contenidos y competencias desarrollados en la asignatura.</p>
+</section>
+<section id="anexo-d.-fragmentos-de-código-principales" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="anexo-d.-fragmentos-de-código-principales"><span class="header-section-number">13.4</span> Anexo D. Fragmentos de código principales</h2>
+<p>Esta sección resume los fragmentos centrales del flujo. El código completo se encuentra en los scripts del repositorio.</p>
+</section>
+<section id="configuración-del-análisis-en-gee" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="configuración-del-análisis-en-gee"><span class="header-section-number">13.5</span> Configuración del análisis en GEE</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> CONFIG <span class="op">=</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">aoiAsset</span><span class="op">:</span> <span class="st">'projects/ee-vivianpenag/assets/AOI'</span><span class="op">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeStart</span><span class="op">:</span> <span class="st">'2026-01-01'</span><span class="op">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeEnd</span><span class="op">:</span> <span class="st">'2026-01-25'</span><span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventStart</span><span class="op">:</span> <span class="st">'2026-02-03'</span><span class="op">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventEnd</span><span class="op">:</span> <span class="st">'2026-02-18'</span><span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">exportFolder</span><span class="op">:</span> <span class="st">'Bajo_Sinu_Flood_RF'</span><span class="op">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> <span class="dv">13</span><span class="op">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">nSamplesPerClass</span><span class="op">:</span> <span class="dv">900</span><span class="op">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">beforeComposite</span><span class="op">:</span> <span class="st">'median'</span><span class="op">,</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">eventComposite</span><span class="op">:</span> <span class="st">'min'</span><span class="op">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">permanentWaterOccurrenceThreshold</span><span class="op">:</span> <span class="dv">95</span><span class="op">,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">excludePermanentWaterInFinal</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">applyConnectivityFilter</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minConnectedPixels</span><span class="op">:</span> <span class="dv">8</span><span class="op">,</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">useOperaDswx</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaDswxCollection</span><span class="op">:</span> <span class="st">'OPERA/DSWX/L3_V1/S1'</span><span class="op">,</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">operaWaterBand</span><span class="op">:</span> <span class="st">'BWTR_Binary_water'</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="construcción-de-la-referencia-opera-dswx-s1" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="construcción-de-la-referencia-opera-dswx-s1"><span class="header-section-number">13.6</span> Construcción de la referencia OPERA DSWx-S1</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">buildOperaReference</span>() {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> dswx <span class="op">=</span> ee<span class="op">.</span><span class="fu">ImageCollection</span>(CONFIG<span class="op">.</span><span class="at">operaDswxCollection</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterBounds</span>(aoi)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">filterDate</span>(CONFIG<span class="op">.</span><span class="at">eventStart</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">eventEnd</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">select</span>(CONFIG<span class="op">.</span><span class="at">operaWaterBand</span>)<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> dswx<span class="op">.</span><span class="fu">map</span>(<span class="kw">function</span>(img) {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">var</span> valid <span class="op">=</span> img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">0</span>)<span class="op">.</span><span class="fu">or</span>(img<span class="op">.</span><span class="fu">eq</span>(<span class="dv">1</span>))<span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> img<span class="op">.</span><span class="fu">updateMask</span>(valid)<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">max</span>()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">rename</span>(<span class="st">'class'</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">clip</span>(aoi)<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="entrenamiento-random-forest-en-gee" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="entrenamiento-random-forest-en-gee"><span class="header-section-number">13.7</span> Entrenamiento Random Forest en GEE</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> samples <span class="op">=</span> stack<span class="op">.</span><span class="fu">stratifiedSample</span>({</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numPoints</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classBand</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">region</span><span class="op">:</span> aoi<span class="op">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">scale</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">scale</span><span class="op">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classValues</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classPoints</span><span class="op">:</span> [CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">nSamplesPerClass</span>]<span class="op">,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span><span class="op">,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">geometries</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tileScale</span><span class="op">:</span> <span class="dv">4</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> samples<span class="op">.</span><span class="fu">randomColumn</span>(<span class="st">'random'</span><span class="op">,</span> CONFIG<span class="op">.</span><span class="at">seed</span>)<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> training <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">lt</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> validation <span class="op">=</span> samples<span class="op">.</span><span class="fu">filter</span>(ee<span class="op">.</span><span class="at">Filter</span><span class="op">.</span><span class="fu">gte</span>(<span class="st">'random'</span><span class="op">,</span> <span class="fl">0.7</span>))<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> classifier <span class="op">=</span> ee<span class="op">.</span><span class="at">Classifier</span><span class="op">.</span><span class="fu">smileRandomForest</span>({</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">numberOfTrees</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">minLeafPopulation</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bagFraction</span><span class="op">:</span> <span class="fl">0.7</span><span class="op">,</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">seed</span><span class="op">:</span> CONFIG<span class="op">.</span><span class="at">seed</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">train</span>({</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">features</span><span class="op">:</span> training<span class="op">,</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">classProperty</span><span class="op">:</span> <span class="st">'class'</span><span class="op">,</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">inputProperties</span><span class="op">:</span> predictorBands</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="reproducción-local-del-rf-en-python" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="reproducción-local-del-rf-en-python"><span class="header-section-number">13.8</span> Reproducción local del RF en Python</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> RandomForestClassifier(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="st">"sqrt"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    min_samples_leaf<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    class_weight<span class="op">=</span><span class="st">"balanced"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">13</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>model.fit(train[PREDICTORS], train[<span class="st">"class"</span>])</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>predicted <span class="op">=</span> model.predict(valid[PREDICTORS])</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(valid[<span class="st">"class"</span>], predicted)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>kappa <span class="op">=</span> cohen_kappa_score(valid[<span class="st">"class"</span>], predicted)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>matrix <span class="op">=</span> confusion_matrix(valid[<span class="st">"class"</span>], predicted, labels<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="resumen-tabular-en-julia" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="resumen-tabular-en-julia"><span class="header-section-number">13.9</span> Resumen tabular en Julia</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> CSV.<span class="fu">read</span>(metrics_path, DataFrame)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>elev <span class="op">=</span> CSV.<span class="fu">read</span>(elev_path, DataFrame)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> CSV.<span class="fu">read</span>(slope_path, DataFrame)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>samples <span class="op">=</span> CSV.<span class="fu">read</span>(samples_path, DataFrame)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> <span class="fu">DataFrame</span>(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    implementation <span class="op">=</span> [<span class="st">"Julia_summary"</span>],</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    area_flood_ha <span class="op">=</span> [metrics.area_flood_ha[<span class="fl">1</span>]],</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    accuracy_gee <span class="op">=</span> [metrics.accuracy[<span class="fl">1</span>]],</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    kappa_gee <span class="op">=</span> [metrics.kappa[<span class="fl">1</span>]],</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    n_samples <span class="op">=</span> [<span class="fu">nrow</span>(samples)],</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    n_training <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&lt;</span> <span class="fl">0.7</span>)],</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    n_validation <span class="op">=</span> [<span class="fu">sum</span>(samples.random <span class="op">.&gt;=</span> <span class="fl">0.7</span>)]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="anexo-e.-configuración-del-entorno-reproducible" class="level2" data-number="13.10">
+<h2 data-number="13.10" class="anchored" data-anchor-id="anexo-e.-configuración-del-entorno-reproducible"><span class="header-section-number">13.10</span> Anexo E. Configuración del entorno reproducible</h2>
+<p>El proyecto define un entorno reproducible propio mediante <code>docker/Dockerfile</code>, <code>docker-compose.project.yml</code> y <code>requirements.txt</code>. Este entorno no depende de la imagen de clase: parte de Ubuntu 24.04 e instala Python, GDAL, Quarto, LaTeX, Julia y las librerías necesarias para el flujo de procesamiento, postproceso y renderizado.</p>
+<p>Comando para construir y levantar el entorno propio:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.project.yml up <span class="at">--build</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El servicio abre Jupyter Lab en <code>http://127.0.0.1:8890</code>.</p>
+<p>Comando para entrar al contenedor del proyecto:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_final bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Durante el desarrollo también se utilizó como respaldo el contenedor de clase <code>image_sig_unal:final</code>, disponible localmente en Docker. Para facilitar su uso desde la carpeta del proyecto se creó el archivo <code>docker-compose.local.yml</code>, que monta la carpeta <code>vpenag</code> en <code>/home/rstudio/work</code> y define como directorio de trabajo <code>/home/rstudio/work/Proyecto_final</code>.</p>
+<p>Comando para levantar el entorno de clase:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose <span class="at">-f</span> docker-compose.local.yml up <span class="at">-d</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Comando para entrar al contenedor de clase:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> bajo_sinu_proyecto_local bash</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Verificación del entorno:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/rstudio/work/Proyecto_final</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/00_check_environment.py</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El entorno verificado incluyó Python 3.12.3, Quarto 1.4.550, <code>earthengine-api</code>, <code>geemap</code>, <code>geopandas</code>, <code>numpy</code>, <code>pandas</code>, <code>rasterio</code>, <code>scikit-learn</code> y <code>matplotlib</code>. Julia 1.10.4 también estuvo disponible con paquetes como <code>CSV</code>, <code>DataFrames</code>, <code>Rasters</code>, <code>ArchGDAL</code> y <code>Plots</code>.</p>
+<p>Las credenciales de Google Earth Engine no se versionan. Cualquier configuración local sensible debe guardarse en rutas ignoradas por git, como <code>credentials/</code> o <code>config/project_config.json</code>.</p>
+<p>Comandos principales del flujo:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/02_postprocess_metrics.py</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/python/03_rf_local_sklearn.py</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">julia</span> scripts/julia/04_postprocess_summary.jl</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render proyecto_final.qmd <span class="at">--to</span> html</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="referencias" class="level1 unnumbered" data-number="14">
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">9 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">14 Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-alexandre2020" class="csl-entry" role="listitem">
 Alexandre, C., Johary, R., Catry, T., Mouquet, P., Révillion, C., Rakotondraompiana, S., &amp; Pennober, G. (2020). A Sentinel-1 Based Processing Chain for Detection of Cyclonic Flood Impacts. <em>Remote Sensing 2020, Vol. 12,</em> <em>12</em>. <a href="https://doi.org/10.3390/RS12020252">https://doi.org/10.3390/RS12020252</a>
+</div>
+<div id="ref-belgiu2016rf" class="csl-entry" role="listitem">
+Belgiu, M., &amp; Drăguţ, L. (2016). Random forest in remote sensing: A review of applications and future directions. <em>ISPRS Journal of Photogrammetry and Remote Sensing</em>, <em>114</em>, 24-31. <a href="https://doi.org/10.1016/j.isprsjprs.2016.01.011">https://doi.org/10.1016/j.isprsjprs.2016.01.011</a>
 </div>
 <div id="ref-billah2023" class="csl-entry" role="listitem">
 Billah, M., Islam, A. K. M. S., Mamoon, W. B., &amp; Rahman, M. R. (2023). Random forest classifications for landuse mapping to assess rapid flood damage using Sentinel-1 and Sentinel-2 data. <em>Remote Sensing Applications: Society and Environment</em>, <em>30</em>, 100947. <a href="https://doi.org/10.1016/J.RSASE.2023.100947">https://doi.org/10.1016/J.RSASE.2023.100947</a>
@@ -281,6 +1043,12 @@ Li, Y., Martinis, S., Plank, S., &amp; Ludwig, R. (2018). An automatic change de
 </div>
 <div id="ref-manyaka2026" class="csl-entry" role="listitem">
 Manyaka, N., Shoko, C., Gxokwe, S., &amp; Dube, T. (2026). Integrating remote sensing and machine learning for flood modelling: A systematic literature review. <em>Physics and Chemistry of the Earth, Parts A/B/C</em>, <em>143</em>, 104315. <a href="https://doi.org/10.1016/J.PCE.2026.104315">https://doi.org/10.1016/J.PCE.2026.104315</a>
+</div>
+<div id="ref-moreira2013" class="csl-entry" role="listitem">
+Moreira, A., Prats-Iraola, P., Younis, M., Krieger, G., Hajnsek, I., &amp; Papathanassiou, K. P. (2013). A Tutorial on Synthetic Aperture Radar. <em>IEEE Geoscience and Remote Sensing Magazine</em>, <em>1</em>(1), 6-43. <a href="https://doi.org/10.1109/MGRS.2013.2248301">https://doi.org/10.1109/MGRS.2013.2248301</a>
+</div>
+<div id="ref-nasa_lifelines_2026" class="csl-entry" role="listitem">
+NASA Lifelines. (2026). <em>Flood Early Warning Data Studio Package</em>. <a href="https://nasalifelines.org/hfs-data-series/flood-early-warning-2/">https://nasalifelines.org/hfs-data-series/flood-early-warning-2/</a>
 </div>
 </div></section></div></main>
 <!-- /main column -->
@@ -676,4 +1444,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
+<script src="proyecto_final_files/libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

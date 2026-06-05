@@ -1,0 +1,2 @@
+implementation,accuracy,kappa,n_samples,n_training,n_validation,tn,fp,fn,tp,precision_class_0,recall_class_0,f1_class_0,precision_class_1,recall_class_1,f1_class_1
+Python_scikit_learn,0.859344894026975,0.718649052064072,1800,1281,519,219,34,39,227,0.8488372093023255,0.8656126482213439,0.8571428571428571,0.8697318007662835,0.8533834586466166,0.8614800759013282

@@ -1,0 +1,2 @@
+implementation,area_flood_ha,accuracy_gee,kappa_gee,n_samples,n_training,n_validation,pct_elevation_0_5m,pct_slope_0_2deg
+Julia_summary,31103.127183708628,0.859344894026975,0.7189746100269255,1800,1281,519,80.69156305202031,57.79937872633347

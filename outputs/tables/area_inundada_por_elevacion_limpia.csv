@@ -1,0 +1,5 @@
+system:index,area_ha,rango,variable,.geo,rango_descripcion,porcentaje
+0,25097.599482592545,1,elev_range,"{""type"":""MultiPoint"",""coordinates"":[]}",0-5 m,80.69156305202031
+1,4567.3682224349,2,elev_range,"{""type"":""MultiPoint"",""coordinates"":[]}",5-10 m,14.684594881594995
+2,1280.278739016874,3,elev_range,"{""type"":""MultiPoint"",""coordinates"":[]}",10-20 m,4.1162379957969435
+3,157.88073966459388,4,elev_range,"{""type"":""MultiPoint"",""coordinates"":[]}",>20 m,0.5076040705877578

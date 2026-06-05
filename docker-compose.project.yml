@@ -1,0 +1,17 @@
+services:
+  proyecto-final:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: bajo-sinu-proyecto-final:latest
+    container_name: bajo_sinu_proyecto_final
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    environment:
+      - QUARTO_PYTHON=/opt/venv/bin/python
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "127.0.0.1:8890:8888"
+    tty: true
+    stdin_open: true
