@@ -90,35 +90,6 @@ div.csl-indent {
 <link href="proyecto_final_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -276,10 +247,10 @@ window.Quarto = {
 <p>El principio de apertura sintética permite construir una antena virtual a partir del desplazamiento de la plataforma y del procesamiento coherente de múltiples ecos recibidos. De esta manera, el sistema genera una imagen de alta resolución que representa la reflectividad o retrodispersión de la escena observada. En términos generales, las áreas con alta retrodispersión aparecen como valores más intensos, mientras que superficies lisas que reflejan la energía fuera de la dirección del sensor tienden a presentar baja retrodispersión <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
 <p>En el caso de Sentinel-1, el uso de SAR es compatible con el objetivo de mapear inundaciones porque permite observar condiciones de la superficie durante o después de eventos de lluvia, incluso cuando la nubosidad limita sensores ópticos.</p>
 <p>Sentinel-1 opera en <strong>banda C</strong>, una región de microondas adecuada para observar cambios superficiales a escalas compatibles con el monitoreo ambiental. Su respuesta no depende únicamente de la presencia o ausencia de agua: también está controlada por la rugosidad, la humedad, la permitividad dieléctrica, el ángulo de incidencia y la geometría local del terreno. En superficies lisas, como agua abierta con poco viento, puede predominar una reflexión especular que reduce el retorno hacia el sensor; en cambio, vegetación, suelo húmedo, oleaje o estructuras urbanas pueden producir respuestas más intensas o ambiguas <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
-<p>De forma general, la respuesta radar de una superficie suele representarse mediante el coeficiente de retrodispersión <span class="math inline">\(\sigma^0\)</span>. Cuando se trabaja en decibeles, se expresa como:</p>
-<p><span class="math display">\[
+<p>De forma general, la respuesta radar de una superficie suele representarse mediante el coeficiente de retrodispersión <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>0</mn></msup><annotation encoding="application/x-tex">\sigma^0</annotation></semantics></math>. Cuando se trabaja en decibeles, se expresa como:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mrow><mi>d</mi><mi>B</mi></mrow><mn>0</mn></msubsup><mo>=</mo><mn>10</mn><msub><mo>log</mo><mn>10</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>σ</mi><mn>0</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \sigma^0_{dB} = 10 \log_{10}(\sigma^0)
-\]</span></p>
+</annotation></semantics></math></p>
 <p>En términos interpretativos, valores bajos de retrodispersión suelen asociarse con superficies lisas, como agua abierta, mientras que valores más altos tienden a relacionarse con vegetación, rugosidad superficial o estructuras que devuelven mayor energía al sensor.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -299,10 +270,10 @@ window.Quarto = {
 <p>El speckle es una característica propia de la imagen SAR coherente. Se produce por la suma de muchas respuestas elementales dentro de una misma celda de resolución, cuyas fases y amplitudes generan fluctuaciones fuertes entre píxeles vecinos. Aunque suele tratarse como ruido visual, no corresponde a un ruido aditivo simple, sino a un efecto asociado a la naturaleza coherente de la medición SAR <span class="citation" data-cites="moreira2013">(<a href="#ref-moreira2013" role="doc-biblioref">Moreira et&nbsp;al., 2013</a>)</span>.</p>
 <p>Para reducir este efecto se emplean técnicas como multilooking o filtros espaciales. Estas operaciones mejoran la interpretabilidad de la imagen, pero implican una pérdida o suavizado de detalle espacial. En este proyecto se asume esa limitación: la reducción de ruido puede estabilizar la clasificación, pero también puede eliminar señales pequeñas o lineales de inundación ribereña.</p>
 <p>En forma simplificada, el multilook puede entenderse como un promedio no coherente de varias observaciones parciales:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>M</mi><mi>L</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>L</mi></munderover><msub><mi>I</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">
 I_{ML} = \frac{1}{L} \sum_{k=1}^{L} I_k
-\]</span></p>
-<p>Donde <span class="math inline">\(I_{ML}\)</span> es la intensidad multilook, <span class="math inline">\(I_k\)</span> es cada observación parcial y <span class="math inline">\(L\)</span> es el número de looks. A mayor número de looks, menor efecto visual del speckle, pero también menor detalle espacial.</p>
+</annotation></semantics></math></p>
+<p>Donde <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mrow><mi>M</mi><mi>L</mi></mrow></msub><annotation encoding="application/x-tex">I_{ML}</annotation></semantics></math> es la intensidad multilook, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>k</mi></msub><annotation encoding="application/x-tex">I_k</annotation></semantics></math> es cada observación parcial y <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> es el número de looks. A mayor número de looks, menor efecto visual del speckle, pero también menor detalle espacial.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="outputs/figures/fig_speckle.png" class="img-fluid figure-img" style="width:60.0%"></p>
@@ -321,15 +292,15 @@ I_{ML} = \frac{1}{L} \sum_{k=1}^{L} I_k
 <p>Los sistemas SAR pueden transmitir y recibir señales con diferentes polarizaciones. En Sentinel-1, las polarizaciones VV y VH permiten observar respuestas distintas de la superficie. La polarización VV puede ser sensible a superficies abiertas y cambios de rugosidad, mientras que VH puede aportar información relacionada con dispersión volumétrica o interacción con vegetación.</p>
 <p>Por esta razón, el proyecto utiliza bandas VV y VH en dos momentos temporales: preevento y evento. A partir de ellas se derivan diferencias temporales y relaciones entre polarizaciones. Estas variables permiten representar cambios de retrodispersión asociados al paso de una condición previa a una condición posiblemente inundada.</p>
 <p>Las variables derivadas usadas en el proyecto pueden expresarse de forma general como:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>V</mi><mi>V</mi><mo>=</mo><mi>V</mi><msub><mi>V</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub><mo>−</mo><mi>V</mi><msub><mi>V</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
 \Delta VV = VV_{evento} - VV_{pre}
-\]</span></p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>V</mi><mi>H</mi><mo>=</mo><mi>V</mi><msub><mi>H</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub><mo>−</mo><mi>V</mi><msub><mi>H</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
 \Delta VH = VH_{evento} - VH_{pre}
-\]</span></p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>V</mi><mi>V</mi><mo>−</mo><mi>V</mi><mi>H</mi></mrow></msub><mo>=</mo><mi>V</mi><msub><mi>V</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub><mo>−</mo><mi>V</mi><msub><mi>H</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
 R_{VV-VH} = VV_{evento} - VH_{evento}
-\]</span></p>
+</annotation></semantics></math></p>
 <p>Si las bandas ya están en dB, estas diferencias se interpretan directamente como cambios relativos de retrodispersión entre fechas y polarizaciones.</p>
 </section>
 <section id="detección-de-cambios-con-sar" class="level2" data-number="2.5">
@@ -337,39 +308,39 @@ R_{VV-VH} = VV_{evento} - VH_{evento}
 <p>La detección de cambios con SAR compara una imagen de referencia, usualmente preevento, con una imagen objetivo durante o después del evento. En cartografía de inundaciones, esta estrategia ayuda a distinguir cambios asociados al evento frente a cuerpos de agua permanentes o respuestas estables. Li et al. <span class="citation" data-cites="li2018">(<a href="#ref-li2018" role="doc-biblioref">2018</a>)</span> indican que estos métodos requieren imágenes comparables en sensor, órbita, polarización y cobertura, porque las diferencias geométricas o radiométricas pueden afectar el resultado.</p>
 <p>En términos operativos, la detección puede hacerse mediante diferencia, razón o log-ratio entre imágenes. En este proyecto, la lógica de cambio se incorpora dentro del stack de predictores del Random Forest, mediante variables como diferencia temporal de VV y diferencia temporal de VH.</p>
 <p>Una forma alternativa de expresar la detección de cambio es mediante la razón o log-ratio:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>R</mi><mo>=</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow><mn>0</mn></msubsup><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow><mn>0</mn></msubsup></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 LR = \log \left( \frac{\sigma^0_{evento}}{\sigma^0_{pre}} \right)
-\]</span></p>
-<p>Aunque el proyecto no clasificó con un umbral único sobre <span class="math inline">\(LR\)</span>, esta expresión resume la lógica física detrás de la comparación temporal de escenas SAR.</p>
+</annotation></semantics></math></p>
+<p>Aunque el proyecto no clasificó con un umbral único sobre <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">LR</annotation></semantics></math>, esta expresión resume la lógica física detrás de la comparación temporal de escenas SAR.</p>
 </section>
 <section id="clasificación-supervisada-y-severidad-relativa" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="clasificación-supervisada-y-severidad-relativa"><span class="header-section-number">2.6</span> Clasificación supervisada y severidad relativa</h2>
 <p>Random Forest es un algoritmo de clasificación supervisada basado en un conjunto de árboles de decisión. Cada árbol se entrena con subconjuntos aleatorios de muestras y variables, y la clasificación final se obtiene mediante votación. Esta estructura permite manejar múltiples predictores y reduce la dependencia de un único umbral.</p>
 <p>Belgiu y Dragut <span class="citation" data-cites="belgiu2016rf">(<a href="#ref-belgiu2016rf" role="doc-biblioref">2016</a>)</span> señalan que Random Forest es usado en percepción remota por su capacidad para manejar alta dimensionalidad y multicolinealidad, además de requerir pocos parámetros en comparación con otros clasificadores. Sin embargo, también advierten que el método es sensible al diseño de muestreo. Por ello, en este proyecto las métricas se interpretan como evaluación frente a una referencia satelital auxiliar, no como validación de campo.</p>
 <p>Para el reporte de desempeño se usaron métricas básicas de clasificación, especialmente exactitud global y coeficiente kappa:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>A</mi><mo>=</mo><mfrac><mrow><mi>V</mi><mi>P</mi><mo>+</mo><mi>V</mi><mi>N</mi></mrow><mi>N</mi></mfrac></mrow><annotation encoding="application/x-tex">
 OA = \frac{VP + VN}{N}
-\]</span></p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mfrac><mrow><msub><mi>p</mi><mi>o</mi></msub><mo>−</mo><msub><mi>p</mi><mi>e</mi></msub></mrow><mrow><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>e</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 \kappa = \frac{p_o - p_e}{1 - p_e}
-\]</span></p>
-<p>Donde <span class="math inline">\(VP\)</span> son verdaderos positivos, <span class="math inline">\(VN\)</span> verdaderos negativos, <span class="math inline">\(N\)</span> el total de muestras, <span class="math inline">\(p_o\)</span> el acuerdo observado y <span class="math inline">\(p_e\)</span> el acuerdo esperado por azar.</p>
+</annotation></semantics></math></p>
+<p>Donde <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>P</mi></mrow><annotation encoding="application/x-tex">VP</annotation></semantics></math> son verdaderos positivos, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">VN</annotation></semantics></math> verdaderos negativos, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> el total de muestras, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>o</mi></msub><annotation encoding="application/x-tex">p_o</annotation></semantics></math> el acuerdo observado y <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>e</mi></msub><annotation encoding="application/x-tex">p_e</annotation></semantics></math> el acuerdo esperado por azar.</p>
 </section>
 <section id="severidad-relativa-morfométrica" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="severidad-relativa-morfométrica"><span class="header-section-number">2.7</span> Severidad relativa morfométrica</h2>
 <p>La severidad relativa propuesta no corresponde a una modelación hidráulica. Se entiende como una interpretación morfométrica dentro de la máscara final de inundación temporal. En este sentido, las áreas inundadas ubicadas en baja elevación y baja pendiente se interpretan como zonas con mayor favorabilidad topográfica para acumulación o permanencia de agua.</p>
 <p>Esta aproximación permite incorporar el DEM y la pendiente al análisis sin ampliar el alcance hacia estimación de profundidad, volumen, velocidad o amenaza hidráulica formal. El resultado debe leerse como una clasificación exploratoria del patrón espacial detectado.</p>
 <p>De manera conceptual, la regla empleada puede resumirse así:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 S(x) = f\left(I(x), E(x), P(x)\right)
-\]</span></p>
+</annotation></semantics></math></p>
 <p>con los siguientes criterios:</p>
 <ul>
-<li>Alta: si el píxel pertenece a la inundación temporal y además se ubica en baja elevación (<span class="math inline">\(E&lt;5\)</span> m) y baja pendiente (<span class="math inline">\(P&lt;2^\circ\)</span>).</li>
+<li>Alta: si el píxel pertenece a la inundación temporal y además se ubica en baja elevación (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>&lt;</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">E&lt;5</annotation></semantics></math> m) y baja pendiente (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>&lt;</mo><msup><mn>2</mn><mo>∘</mo></msup></mrow><annotation encoding="application/x-tex">P&lt;2^\circ</annotation></semantics></math>).</li>
 <li>Media: si el píxel pertenece a la inundación temporal y solo cumple una de las dos condiciones anteriores.</li>
 <li>Baja: si el píxel pertenece a la inundación temporal, pero no cumple ninguna de las dos condiciones anteriores.</li>
 </ul>
-<p>Donde <span class="math inline">\(I(x)\)</span> indica si el píxel pertenece a la máscara de inundación temporal, <span class="math inline">\(E(x)\)</span> es la elevación y <span class="math inline">\(P(x)\)</span> la pendiente.</p>
+<p>Donde <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(x)</annotation></semantics></math> indica si el píxel pertenece a la máscara de inundación temporal, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">E(x)</annotation></semantics></math> es la elevación y <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(x)</annotation></semantics></math> la pendiente.</p>
 </section>
 </section>
 <section id="estado-del-arte" class="level1" data-number="3">
@@ -504,9 +475,9 @@ Figura&nbsp;1: Área de estudio: Subzona Hidrográfica del Bajo Sinú, departame
 <p>Para mantener una base de comparación homogénea, las colecciones preevento y evento se filtraron sobre la misma área de estudio, el modo de adquisición <code>IW</code> y la disponibilidad simultánea de las polarizaciones <code>VV</code> y <code>VH</code>. Los compuestos temporales también reducen la dependencia de una única escena y parte de la variabilidad local asociada al speckle. No obstante, el flujo no restringió explícitamente la dirección orbital ni el número de órbita relativa, por lo que diferencias residuales en la geometría de observación pueden contribuir a algunos cambios de retrodispersión.</p>
 <p>El stack de predictores usado por el modelo Random Forest incluyó nueve bandas: VV y VH preevento, VV y VH del evento, diferencia temporal de VV, diferencia temporal de VH, relación VV-VH del evento, elevación y pendiente. La elevación se obtuvo de NASADEM y la pendiente se derivó mediante <code>ee.Terrain.slope()</code>.</p>
 <p>En notación resumida, el stack puede escribirse como:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mi>V</mi><msub><mi>V</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow></msub><mo>,</mo><mi>V</mi><msub><mi>H</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi></mrow></msub><mo>,</mo><mi>V</mi><msub><mi>V</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub><mo>,</mo><mi>V</mi><msub><mi>H</mi><mrow><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>o</mi></mrow></msub><mo>,</mo><mi>Δ</mi><mi>V</mi><mi>V</mi><mo>,</mo><mi>Δ</mi><mi>V</mi><mi>H</mi><mo>,</mo><msub><mi>R</mi><mrow><mi>V</mi><mi>V</mi><mo>−</mo><mi>V</mi><mi>H</mi></mrow></msub><mo>,</mo><mi>D</mi><mi>E</mi><mi>M</mi><mo>,</mo><mi>S</mi><mi>l</mi><mi>o</mi><mi>p</mi><mi>e</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 X = [VV_{pre}, VH_{pre}, VV_{evento}, VH_{evento}, \Delta VV, \Delta VH, R_{VV-VH}, DEM, Slope]
-\]</span></p>
+</annotation></semantics></math></p>
 <p>La inspección visual de los predictores permitió revisar la coherencia espacial de las capas antes de entrenar el clasificador. La banda VV del evento muestra la respuesta SAR durante la ventana de inundación, mientras que la diferencia temporal entre evento y preevento permite resaltar cambios de retrodispersión potencialmente asociados a superficies húmedas o inundadas.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -551,10 +522,10 @@ X = [VV_{pre}, VH_{pre}, VV_{evento}, VH_{evento}, \Delta VV, \Delta VH, R_{VV-V
 <p>El Random Forest entrenado con OPERA DSWx-S1 clasifica inicialmente píxeles de agua y no agua observados durante el evento. Esta salida puede incluir cuerpos de agua permanentes, ciénagas y humedales, por lo que no equivale directamente a una máscara de inundación temporal.</p>
 <p>Para aproximar la inundación temporal, se excluyeron píxeles de agua permanente usando <code>JRC/GSW1_4/GlobalSurfaceWater</code>, banda <code>occurrence</code>, con un umbral de 95%. También se evaluó un filtro de conectividad de 8 píxeles conectados para reducir ruido espacial, pero no se aplicó al producto final porque eliminaba patrones pequeños y lineales potencialmente asociados con inundación ribereña o urbana, especialmente cerca de Montería.</p>
 <p>El cálculo del área se resume con:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>h</mi><mi>a</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>N</mi><mrow><mi>p</mi><mi>i</mi><mi>x</mi></mrow></msub><mo>⋅</mo><msup><mi>r</mi><mn>2</mn></msup></mrow><mrow><mn>10</mn><mspace width="0.167em"></mspace><mn>000</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 A_{ha} = \frac{N_{pix} \cdot r^2}{10\,000}
-\]</span></p>
-<p>Donde <span class="math inline">\(N_{pix}\)</span> es el número de píxeles clasificados como inundación y <span class="math inline">\(r\)</span> es la resolución espacial en metros. Para Sentinel-1 remuestreado a 30 m, cada píxel equivale a 900 m<span class="math inline">\(^2\)</span> o 0.09 ha.</p>
+</annotation></semantics></math></p>
+<p>Donde <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mrow><mi>p</mi><mi>i</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">N_{pix}</annotation></semantics></math> es el número de píxeles clasificados como inundación y <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> es la resolución espacial en metros. Para Sentinel-1 remuestreado a 30 m, cada píxel equivale a 900 m<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mn>2</mn></msup><annotation encoding="application/x-tex">^2</annotation></semantics></math> o 0.09 ha.</p>
 </section>
 <section id="productos-de-salida" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="productos-de-salida"><span class="header-section-number">7.5</span> Productos de salida</h2>
@@ -598,9 +569,9 @@ A_{ha} = \frac{N_{pix} \cdot r^2}{10\,000}
 </table>
 <p>El coeficiente kappa se reporta como métrica complementaria por su uso frecuente en clasificación de imágenes. Sin embargo, la interpretación principal se basa en la matriz de confusión y en las precisiones por clase, dado que OPERA DSWx-S1 se utiliza como referencia auxiliar y no como verdad de campo.</p>
 <p>Con la matriz anterior, la exactitud global se calcula como:</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>A</mi><mo>=</mo><mfrac><mrow><mn>225</mn><mo>+</mo><mn>221</mn></mrow><mn>519</mn></mfrac><mo>=</mo><mn>0.859</mn></mrow><annotation encoding="application/x-tex">
 OA = \frac{225 + 221}{519} = 0.859
-\]</span></p>
+</annotation></semantics></math></p>
 <p>Además de la exactitud global, se calcularon métricas específicas para la clase agua, que es la categoría de mayor interés para este proyecto. La precisión de usuario para agua fue de 0.888, la sensibilidad o precisión de productor fue de 0.831 y el F1-score aproximado fue de 0.858. Estos valores indican una capacidad adecuada para detectar superficies inundadas, aunque persisten errores de omisión y comisión asociados a la complejidad radiométrica de algunas coberturas, bordes de agua, vegetación inundada o superficies con baja retrodispersión.</p>
 </section>
 <section id="resultados-de-la-verificación-local-en-python-y-el-resumen-en-julia" class="level2" data-number="8.2">
