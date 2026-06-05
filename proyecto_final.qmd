@@ -29,6 +29,8 @@ number-sections: true
 toc: true
 ---
 
+\newpage
+
 # Introducción y justificación
 
 Las inundaciones constituyen uno de los fenómenos hidrológicos con alto impacto territorial, social y ambiental en Colombia, especialmente en zonas con alta dinámica fluvial, ocupación de planicies de inundación y exposición de actividades humanas e infraestructura. En el departamento de Córdoba, el comportamiento del río Sinú ha generado afectaciones sobre áreas rurales y urbanas, por lo que el análisis espacial de este fenómeno resulta pertinente tanto desde una perspectiva territorial como metodológica.
@@ -212,8 +214,10 @@ La elección de esta subzona responde a dos criterios principales. El primero es
 
 La delimitación final del polígono se realizó a partir de información geográfica en formato vectorial, posteriormente convertida a GeoJSON para su integración al flujo reproducible del proyecto. El mapa de localización incluido en esta sección sirve como referencia espacial del área de análisis.
 
-![Área de estudio: Subzona Hidrográfica del Bajo Sinú, departamento de Córdoba.]
 ```{python}
+#| label: fig-area-estudio
+#| fig-cap: "Área de estudio: Subzona Hidrográfica del Bajo Sinú, departamento de Córdoba."
+#| out-width: "55%"
 import geopandas as gpd
 import matplotlib.pyplot as plt
 
@@ -232,13 +236,13 @@ if aoi.crs is not None and aoi.crs.to_string() != "EPSG:4326":
 cordoba = dptos[dptos["DeNombre"].str.upper().str.contains("CORDOBA|CÓRDOBA", na=False)]
 
 # Crear mapa
-fig, ax = plt.subplots(figsize=(8, 10))
+fig, ax = plt.subplots(figsize=(5, 6.5))
 
 dptos.plot(ax=ax, color="whitesmoke", edgecolor="gray", linewidth=0.4)
 cordoba.plot(ax=ax, color="lightyellow", edgecolor="black", linewidth=1.0)
 aoi.plot(ax=ax, color="deepskyblue", edgecolor="black", linewidth=1.0)
 
-ax.set_title("Área de estudio: Subzona Hidrográfica del Bajo Sinú, Departamento de Córdoba", fontsize=13)
+ax.set_title("Subzona Hidrográfica del Bajo Sinú", fontsize=11)
 ax.set_xlabel("Longitud")
 ax.set_ylabel("Latitud")
 ax.grid(True, linestyle="--", alpha=0.3)
@@ -253,13 +257,13 @@ El proyecto se apoyó en fuentes de datos abiertas y reproducibles, seleccionada
 
 | Fuente | Tipo de dato | Resolución / escala | Periodo | Uso dentro del proyecto |
 |---|---|---:|---|---|
-| Sentinel-1 SAR GRD | Ráster SAR | 10 m nativo; análisis a 30 m | Enero-febrero de 2026 | Retrodispersión preevento y evento en VV/VH |
-| OPERA DSWx-S1 | Ráster de agua superficial | 30 m | Ventana del evento | Referencia auxiliar para muestras agua/no agua |
-| NASADEM | Modelo digital de elevación | 30 m | Producto estático | Elevación para análisis topográfico |
-| `ee.Terrain.slope()` | Ráster derivado | 30 m | Derivado de NASADEM | Pendiente para severidad relativa |
-| JRC Global Surface Water | Ráster histórico | 30 m | Serie histórica JRC | Exclusión de agua permanente mediante `occurrence` |
-| AOI Bajo Sinú | Vector | Subzona hidrográfica | Producto local | Área de estudio y máscara espacial |
-| GEE, Python, Julia y Quarto | Entorno programático | No aplica | Flujo reproducible | Procesamiento, verificación, resumen y documentación |
+| Sentinel-1 SAR GRD | Ráster SAR | 10 m nativo; análisis a 30 m | Ene-feb 2026 | VV/VH preevento y evento |
+| OPERA DSWx-S1 | Agua superficial | 30 m | Evento | Referencia auxiliar para muestreo |
+| NASADEM | Elevación | 30 m | Estático | DEM para análisis topográfico |
+| `ee.Terrain.slope()` | Pendiente | 30 m | Derivado | Variable de severidad relativa |
+| JRC Global Surface Water | Agua permanente | 30 m | Serie histórica | Máscara por `occurrence` |
+| AOI Bajo Sinú | Vector | Subzona hidrográfica | Local | Área de estudio y recorte |
+| GEE, Python, Julia y Quarto | Entorno | No aplica | Reproducible | Procesamiento y documentación |
 
 
 # Metodología

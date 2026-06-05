@@ -407,12 +407,16 @@ S(x) = f\left(I(x), E(x), P(x)\right)
 <p>El área de estudio corresponde a la <strong>Subzona Hidrográfica del Bajo Sinú</strong>, ubicada en el departamento de Córdoba, Colombia. Esta delimitación proporciona una unidad territorial más manejable que la cuenca completa del río Sinú, lo cual apoya tanto la interpretación espacial como la viabilidad operativa del proyecto.</p>
 <p>La elección de esta subzona responde a dos criterios principales. El primero es su pertinencia territorial, dado que el tramo bajo del río Sinú presenta condiciones propicias para la ocurrencia de inundaciones por su dinámica fluvial y por la presencia de áreas bajas y planicies susceptibles al anegamiento. El segundo es la factibilidad analítica, ya que trabajar sobre una subzona específica permite controlar de manera efectiva el volumen de datos, seleccionar un evento concreto, reducir el tiempo de procesamiento y simplificar la construcción de muestras de entrenamiento y validación.</p>
 <p>La delimitación final del polígono se realizó a partir de información geográfica en formato vectorial, posteriormente convertida a GeoJSON para su integración al flujo reproducible del proyecto. El mapa de localización incluido en esta sección sirve como referencia espacial del área de análisis.</p>
-<p>![Área de estudio: Subzona Hidrográfica del Bajo Sinú, departamento de Córdoba.]</p>
-<div id="58b1422d" class="cell" data-execution_count="1">
+<div id="cell-fig-area-estudio" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="proyecto_final_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+<div id="fig-area-estudio" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-area-estudio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="proyecto_final_files/figure-html/fig-area-estudio-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-area-estudio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Área de estudio: Subzona Hidrográfica del Bajo Sinú, departamento de Córdoba.
+</figcaption>
 </figure>
 </div>
 </div>
@@ -443,50 +447,50 @@ S(x) = f\left(I(x), E(x), P(x)\right)
 <td>Sentinel-1 SAR GRD</td>
 <td>Ráster SAR</td>
 <td style="text-align: right;">10 m nativo; análisis a 30 m</td>
-<td>Enero-febrero de 2026</td>
-<td>Retrodispersión preevento y evento en VV/VH</td>
+<td>Ene-feb 2026</td>
+<td>VV/VH preevento y evento</td>
 </tr>
 <tr class="even">
 <td>OPERA DSWx-S1</td>
-<td>Ráster de agua superficial</td>
+<td>Agua superficial</td>
 <td style="text-align: right;">30 m</td>
-<td>Ventana del evento</td>
-<td>Referencia auxiliar para muestras agua/no agua</td>
+<td>Evento</td>
+<td>Referencia auxiliar para muestreo</td>
 </tr>
 <tr class="odd">
 <td>NASADEM</td>
-<td>Modelo digital de elevación</td>
+<td>Elevación</td>
 <td style="text-align: right;">30 m</td>
-<td>Producto estático</td>
-<td>Elevación para análisis topográfico</td>
+<td>Estático</td>
+<td>DEM para análisis topográfico</td>
 </tr>
 <tr class="even">
 <td><code>ee.Terrain.slope()</code></td>
-<td>Ráster derivado</td>
+<td>Pendiente</td>
 <td style="text-align: right;">30 m</td>
-<td>Derivado de NASADEM</td>
-<td>Pendiente para severidad relativa</td>
+<td>Derivado</td>
+<td>Variable de severidad relativa</td>
 </tr>
 <tr class="odd">
 <td>JRC Global Surface Water</td>
-<td>Ráster histórico</td>
+<td>Agua permanente</td>
 <td style="text-align: right;">30 m</td>
-<td>Serie histórica JRC</td>
-<td>Exclusión de agua permanente mediante <code>occurrence</code></td>
+<td>Serie histórica</td>
+<td>Máscara por <code>occurrence</code></td>
 </tr>
 <tr class="even">
 <td>AOI Bajo Sinú</td>
 <td>Vector</td>
 <td style="text-align: right;">Subzona hidrográfica</td>
-<td>Producto local</td>
-<td>Área de estudio y máscara espacial</td>
+<td>Local</td>
+<td>Área de estudio y recorte</td>
 </tr>
 <tr class="odd">
 <td>GEE, Python, Julia y Quarto</td>
-<td>Entorno programático</td>
+<td>Entorno</td>
 <td style="text-align: right;">No aplica</td>
-<td>Flujo reproducible</td>
-<td>Procesamiento, verificación, resumen y documentación</td>
+<td>Reproducible</td>
+<td>Procesamiento y documentación</td>
 </tr>
 </tbody>
 </table>
